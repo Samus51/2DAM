@@ -1,0 +1,13 @@
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/data/icudtl.dat
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/flutter_windows.dll
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/url_launcher_windows_plugin.dll
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.bin
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/data/flutter_assets/AssetManifest.json
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/ibai.jpg
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/data/flutter_assets/assets/images/papa.jpg
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/data/flutter_assets/FontManifest.json
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/data/flutter_assets/fonts/MaterialIcons-Regular.otf
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/data/flutter_assets/kernel_blob.bin
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/data/flutter_assets/NOTICES.Z
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf
+C:/Users/Alumnado2DAM/Desktop/prueba_app/holamundo/build/windows/x64/runner/Debug/data/flutter_assets/shaders/ink_sparkle.frag
