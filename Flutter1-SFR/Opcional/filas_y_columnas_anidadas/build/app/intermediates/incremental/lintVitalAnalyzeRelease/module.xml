@@ -1,0 +1,18 @@
+<lint-module
+    format="1"
+    dir="C:\Users\Pc\Desktop\Repo2DAM\2DAM\Flutter1-SFR\Opcional\filas_y_columnas_anidadas\android\app"
+    name=":app"
+    type="APP"
+    maven="android:app:"
+    agpVersion="8.1.0"
+    buildFolder="C:\Users\Pc\Desktop\Repo2DAM\2DAM\Flutter1-SFR\Opcional\filas_y_columnas_anidadas\build\app"
+    bootClassPath="C:\Users\Pc\AppData\Local\Android\sdk\platforms\android-34\android.jar;C:\Users\Pc\AppData\Local\Android\sdk\build-tools\33.0.1\core-lambda-stubs.jar"
+    javaSourceLevel="1.8"
+    compileTarget="android-34">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>

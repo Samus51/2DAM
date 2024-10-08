@@ -1,0 +1,4 @@
+#Mon Oct 07 23:10:43 CEST 2024
+base.0=C\:\\Users\\Pc\\Desktop\\Repo2DAM\\2DAM\\Flutter1-SFR\\Opcional\\filas_y_columnas_anidadas\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
