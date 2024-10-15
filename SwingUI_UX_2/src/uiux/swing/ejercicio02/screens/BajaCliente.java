@@ -7,11 +7,7 @@ import java.awt.*;
  * Clase que representa la ventana para eliminar un cliente.
  * Permite buscar un cliente por nombre y confirmar su eliminación.
  */
-<<<<<<< HEAD
 public class BajaCliente extends JDialog {
-=======
-public class BajaCliente extends JFrame {
->>>>>>> d7bf18b3bf8bd8f10fbc24ebdf3e0e1e78507536
     private static final long serialVersionUID = 1L;
     private JTextField nombreField;
     private JButton eliminarButton;
@@ -24,22 +20,35 @@ public class BajaCliente extends JFrame {
      */
     public BajaCliente(PantallaInicial pantalla) {
         this.pantalla = pantalla;
+        setIconImage(new ImageIcon(getClass().getResource("/resources/iconoui.jpg")).getImage());
         setTitle("Baja Cliente");
         setSize(300, 100);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(2, 2));
 
-        add(new JLabel("Nombre:"));
+        // Colores elegidos
+        Color fondoDialogo = new Color(224, 255, 255); 
+        Color textoColor = new Color(0, 0, 0);
+        Color labelColor = new Color(0, 102, 204); 
+        Color buttonColor = new Color(220, 20, 60); 
+
+        // Configuración del fondo del diálogo
+        getContentPane().setBackground(fondoDialogo);
+
+        // Añadir etiquetas y campos
+        JLabel nombreLabel = new JLabel("Nombre:");
+        nombreLabel.setForeground(labelColor);
+        add(nombreLabel);
         nombreField = new JTextField();
         add(nombreField);
 
+        // Botón para eliminar cliente
         eliminarButton = new JButton("Eliminar Cliente");
+        eliminarButton.setBackground(buttonColor);
+        eliminarButton.setForeground(Color.WHITE); 
         eliminarButton.addActionListener(e -> {
             String nombre = nombreField.getText();
-<<<<<<< HEAD
-            
-=======
->>>>>>> d7bf18b3bf8bd8f10fbc24ebdf3e0e1e78507536
+
             // Validar que el cliente existe
             if (pantalla.getClientes().stream().noneMatch(cliente -> cliente.contains(nombre))) {
                 JOptionPane.showMessageDialog(this, "El cliente no existe.", "Error",
@@ -55,9 +64,10 @@ public class BajaCliente extends JFrame {
                 dispose();
             }
         });
-        add(new JLabel());
+        add(new JLabel()); 
         add(eliminarButton);
 
+        setModal(true); 
         setVisible(true);
     }
 }

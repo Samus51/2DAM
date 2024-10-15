@@ -1,5 +1,8 @@
 package uiux.swing.ejercicio02;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
 import uiux.swing.ejercicio02.screens.PantallaInicial;
 
 public class MainApp {
@@ -13,4 +16,7 @@ public class MainApp {
 		demo.setVisible(true);
 		
 	}
+
+	
+
 }

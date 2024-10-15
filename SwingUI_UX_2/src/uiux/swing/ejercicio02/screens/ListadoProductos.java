@@ -1,11 +1,8 @@
 package uiux.swing.ejercicio02.screens;
 
 import javax.swing.*;
-<<<<<<< HEAD
-
-import utils.Producto;
-
 import java.awt.*;
+import utils.Producto;
 
 /**
  * Clase que representa la ventana para listar productos.
@@ -23,52 +20,34 @@ public class ListadoProductos extends JDialog {
      */
     public ListadoProductos(PantallaInicial pantalla) {
         this.pantalla = pantalla;
+        setIconImage(new ImageIcon(getClass().getResource("/resources/iconoui.jpg")).getImage());
         setTitle("Lista de Productos");
         setSize(400, 300);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
+        // Colores elegidos
+        Color fondoDialogo = new Color(224, 255, 255); // Color suave para el fondo del diálogo
+        Color fondoTextoArea = new Color(240, 248, 255); // Alice Blue para el área de texto
+        Color textoColor = new Color(0, 0, 0); // Negro para el texto
+
+        // Configuración del fondo del diálogo
+        getContentPane().setBackground(fondoDialogo);
+
+        // Configuración del área de texto
         productosTextArea = new JTextArea();
         productosTextArea.setEditable(false);
+        productosTextArea.setBackground(fondoTextoArea);
+        productosTextArea.setForeground(textoColor);
+        productosTextArea.setFont(new Font("Arial", Font.PLAIN, 12)); // Fuente del área de texto
+        productosTextArea.setBorder(BorderFactory.createLineBorder(Color.GRAY)); // Borde gris para el área de texto
         JScrollPane scrollPane = new JScrollPane(productosTextArea);
         add(scrollPane, BorderLayout.CENTER);
 
         // Mostrar los productos en el área de texto
         actualizarProductosTextArea();
 
-=======
-import java.awt.*;
-
-/**
- * Clase que representa la ventana para listar productos.
- * Muestra una lista de todos los productos disponibles en la aplicación.
- */
-public class ListadoProductos extends JFrame {
-    private static final long serialVersionUID = 1L;
-    private JTextArea productosTextArea;
-    private PantallaInicial pantalla;
-
-    /**
-     * Constructor de la clase ListarProductos.
-     *
-     * @param pantalla La instancia de PantallaInicial para acceder a la lista de productos.
-     */
-    public ListadoProductos(PantallaInicial pantalla) {
-        this.pantalla = pantalla;
-        setTitle("Lista de Productos");
-        setSize(400, 300);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
-
-        productosTextArea = new JTextArea();
-        productosTextArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(productosTextArea);
-        add(scrollPane, BorderLayout.CENTER);
-
-        // Mostrar los productos en el área de texto
-        actualizarProductosTextArea();
-
->>>>>>> d7bf18b3bf8bd8f10fbc24ebdf3e0e1e78507536
+        setModal(true); // Hacer el diálogo modal
         setVisible(true);
     }
 
@@ -77,11 +56,7 @@ public class ListadoProductos extends JFrame {
      */
     private void actualizarProductosTextArea() {
         productosTextArea.setText("");
-<<<<<<< HEAD
         for (Producto producto : pantalla.getProductos()) {
-=======
-        for (String producto : pantalla.getProductos()) {
->>>>>>> d7bf18b3bf8bd8f10fbc24ebdf3e0e1e78507536
             productosTextArea.append(producto + "\n");
         }
     }
