@@ -1,52 +1,48 @@
 package uiux.ejercicio03;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.ImageIcon;
-import javax.swing.JPopupMenu;
-import javax.swing.JMenuItem;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Component;
-import java.awt.GridLayout;
+import net.miginfocom.swing.MigLayout;
+import uiux.ejercicio03.panels.PanelAñadirCliente;
+import uiux.ejercicio03.panels.PanelAñadirProducto;
+import uiux.ejercicio03.panels.PanelClientes;
+import uiux.ejercicio03.panels.PanelEliminarCliente;
+import uiux.ejercicio03.panels.PanelEliminarProducto;
+import uiux.ejercicio03.panels.PanelProductos;
 
 public class VentanaPrincipal extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JPopupMenu popupMenu;
+    private JTabbedPane tabbedPane;
 
-    /**
-     * Launch the application.
-     */
-    /**
-     * Create the frame.
-     */
     public VentanaPrincipal() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 600, 400);
+        setBounds(100, 100, 694, 497);
 
         contentPane = new JPanel();
         contentPane.setBackground(Color.decode("#FF9505"));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
         setContentPane(contentPane);
-        contentPane.setLayout(new MigLayout("", "[][][][][grow][grow][][][][][][]", "[][][][grow][][grow]"));
+        contentPane.setLayout(new MigLayout("", "[30px][28px][559px]", "[35px][393px]"));
 
-        JLabel lblLogo = new JLabel("\r\n");
-        lblLogo.setIcon(
-                new ImageIcon(VentanaPrincipal.class.getResource("/resources/imagen_2024-10-19_134002464 (1).png")));
-        contentPane.add(lblLogo, "cell 0 0,alignx center,aligny center");
+        // Crear el JTabbedPane
+        tabbedPane = new JTabbedPane();
+        tabbedPane.setSelectedIndex(-1);
+        contentPane.add(tabbedPane, "cell 1 1 2 1,grow");
+
+        JLabel lblLogo = new JLabel();
+        lblLogo.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/resources/imagen_2024-10-19_134002464 (1).png")));
+        contentPane.add(lblLogo, "cell 0 0 3 1,alignx left,aligny top");
 
         JLabel lblMenu = new JLabel("");
-        lblMenu.setIcon(
-                new ImageIcon(VentanaPrincipal.class.getResource("/resources/imagen_2024-10-19_134528012.png")));
-        contentPane.add(lblMenu, "cell 0 1");
+        lblMenu.setVerticalAlignment(SwingConstants.TOP);
+        lblMenu.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/resources/imagen_2024-10-19_134528012.png")));
+        contentPane.add(lblMenu, "cell 0 1,grow");
 
         popupMenu = new JPopupMenu();
         addPopup(lblMenu, popupMenu);
@@ -54,37 +50,32 @@ public class VentanaPrincipal extends JFrame {
         JMenu mnNewMenu_1 = new JMenu("Productos");
         popupMenu.add(mnNewMenu_1);
 
-        JMenuItem mntmNewMenuItem_3 = new JMenuItem("Listar Productos");
-        mnNewMenu_1.add(mntmNewMenuItem_3);
+        JMenuItem mntmListarProductos = new JMenuItem("Listar Productos");
+        mnNewMenu_1.add(mntmListarProductos);
+        mntmListarProductos.addActionListener(e -> mostrarPanel("Listar Productos", new PanelProductos()));
 
-        JMenuItem mntmNewMenuItem_4 = new JMenuItem("Añadir Producto");
-        mnNewMenu_1.add(mntmNewMenuItem_4);
+        JMenuItem mntmAnadirProducto = new JMenuItem("Añadir Producto");
+        mnNewMenu_1.add(mntmAnadirProducto);
+        mntmAnadirProducto.addActionListener(e -> mostrarPanel("Añadir Producto", new PanelAñadirProducto()));
 
-        JMenuItem mntmNewMenuItem_5 = new JMenuItem("Eliminar Producto");
-        mnNewMenu_1.add(mntmNewMenuItem_5);
+        JMenuItem mntmEliminarProducto = new JMenuItem("Eliminar Producto");
+        mnNewMenu_1.add(mntmEliminarProducto);
+        mntmEliminarProducto.addActionListener(e -> mostrarPanel("Eliminar Producto", new PanelEliminarProducto()));
 
         JMenu mnNewMenu = new JMenu("Clientes");
         popupMenu.add(mnNewMenu);
 
-        JMenuItem mntmNewMenuItem_2 = new JMenuItem("Listar Clientes");
-        mnNewMenu.add(mntmNewMenuItem_2);
+        JMenuItem mntmListarClientes = new JMenuItem("Listar Clientes");
+        mnNewMenu.add(mntmListarClientes);
+        mntmListarClientes.addActionListener(e -> mostrarPanel("Listar Clientes", new PanelClientes()));
 
-        JMenuItem mntmNewMenuItem = new JMenuItem("Añadir Cliente");
-        mnNewMenu.add(mntmNewMenuItem);
+        JMenuItem mntmAnadirCliente = new JMenuItem("Añadir Cliente");
+        mnNewMenu.add(mntmAnadirCliente);
+        mntmAnadirCliente.addActionListener(e -> mostrarPanel("Añadir Cliente", new PanelAñadirCliente()));
 
-        JMenuItem mntmNewMenuItem_1 = new JMenuItem("Eliminar Cliente");
-        mnNewMenu.add(mntmNewMenuItem_1);
-
-        // Añadir un nuevo panel con GridLayout
-        JPanel panelNuevo = new JPanel();
-        panelNuevo.setBackground(Color.decode("#FFF000"));
-        contentPane.add(panelNuevo, "cell 1 0 8 6,grow");
-        panelNuevo.setLayout(null);
-        
-        JPanel panel = new JPanel();
-        panel.setBounds(0, 169, 322, 168);
-        panelNuevo.add(panel);
-        panel.setLayout(null);
+        JMenuItem mntmEliminarCliente = new JMenuItem("Eliminar Cliente");
+        mnNewMenu.add(mntmEliminarCliente);
+        mntmEliminarCliente.addActionListener(e -> mostrarPanel("Eliminar Cliente", new PanelEliminarCliente()));
 
         lblMenu.addMouseListener(new MouseAdapter() {
             @Override
@@ -92,7 +83,12 @@ public class VentanaPrincipal extends JFrame {
                 popupMenu.show(lblMenu, e.getX(), e.getY());
             }
         });
+    }
 
+    private void mostrarPanel(String title, JPanel panel) {
+        tabbedPane.removeAll(); // Limpiar las pestañas existentes
+        tabbedPane.addTab(title, panel); // Añadir nuevo panel
+        tabbedPane.setDisplayedMnemonicIndexAt(0, -1);
     }
 
     private static void addPopup(Component component, final JPopupMenu popup) {
@@ -112,6 +108,13 @@ public class VentanaPrincipal extends JFrame {
             private void showMenu(MouseEvent e) {
                 popup.show(e.getComponent(), e.getX(), e.getY());
             }
+        });
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            VentanaPrincipal frame = new VentanaPrincipal();
+            frame.setVisible(true);
         });
     }
 }
