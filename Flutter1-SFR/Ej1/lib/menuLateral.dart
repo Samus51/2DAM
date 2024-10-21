@@ -3,6 +3,8 @@ import 'package:holamundo/screens/enlace1.dart';
 import 'package:holamundo/screens/enlace2.dart';
 import 'package:holamundo/screens/enlace3.dart';
 import 'package:holamundo/screens/enlace4.dart';
+import 'package:holamundo/screens/enlace5.dart';
+import 'package:holamundo/screens/InstagramScreen.dart';
 
 class MenuLateral extends StatelessWidget {
   const MenuLateral({super.key});
@@ -22,19 +24,13 @@ class MenuLateral extends StatelessWidget {
               ),
             ),
           ),
-          Ink(
-            color: Colors.indigo,
-            child: ListTile(
-              title: const Text(
-                "Pantalla 1",
-                style: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => const Enlace1()));
-              },
-            ),
+          ListTile(
+            title: const Text("Pantalla 1"),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => const Enlace1()));
+            },
           ),
           ListTile(
             title: const Text("Pantalla 2"),
@@ -60,7 +56,22 @@ class MenuLateral extends StatelessWidget {
                   builder: (BuildContext context) => const Enlace4()));
             },
           ),
-          
+          ListTile(
+            title: const Text("Pantalla 5"),
+            onTap: () {
+              Navigator.of(context).pop(); // Cierra el menú lateral
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => const Enlace5()));
+            },
+          ),
+          ListTile(
+            title: const Text("Instagram"),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => const InstagramScreen()));
+            },
+          ),
         ],
       ),
     );
