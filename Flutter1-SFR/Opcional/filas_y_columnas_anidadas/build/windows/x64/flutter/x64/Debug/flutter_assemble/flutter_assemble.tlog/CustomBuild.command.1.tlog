@@ -1,0 +1,28 @@
+^C:\USERS\PC\DESKTOP\REPO2DAM\2DAM\FLUTTER1-SFR\OPCIONAL\FILAS_Y_COLUMNAS_ANIDADAS\BUILD\WINDOWS\X64\CMAKEFILES\A08DD133A639714FBF0E9C4430FAF60D\FLUTTER_WINDOWS.DLL.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E env FLUTTER_ROOT=C:\flutter PROJECT_DIR=C:\Users\Pc\Desktop\Repo2DAM\2DAM\Flutter1-SFR\Opcional\filas_y_columnas_anidadas FLUTTER_ROOT=C:\flutter FLUTTER_EPHEMERAL_DIR=C:\Users\Pc\Desktop\Repo2DAM\2DAM\Flutter1-SFR\Opcional\filas_y_columnas_anidadas\windows\flutter\ephemeral PROJECT_DIR=C:\Users\Pc\Desktop\Repo2DAM\2DAM\Flutter1-SFR\Opcional\filas_y_columnas_anidadas FLUTTER_TARGET=C:\Users\Pc\Desktop\Repo2DAM\2DAM\Flutter1-SFR\Opcional\filas_y_columnas_anidadas\lib\main.dart DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=false PACKAGE_CONFIG=C:\Users\Pc\Desktop\Repo2DAM\2DAM\Flutter1-SFR\Opcional\filas_y_columnas_anidadas\.dart_tool\package_config.json C:/flutter/packages/flutter_tools/bin/tool_backend.bat windows-x64 Debug
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PC\DESKTOP\REPO2DAM\2DAM\FLUTTER1-SFR\OPCIONAL\FILAS_Y_COLUMNAS_ANIDADAS\BUILD\WINDOWS\X64\CMAKEFILES\ECA5EC33FF25570220A84374C27F3B1F\FLUTTER_ASSEMBLE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\PC\DESKTOP\REPO2DAM\2DAM\FLUTTER1-SFR\OPCIONAL\FILAS_Y_COLUMNAS_ANIDADAS\WINDOWS\FLUTTER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/Pc/Desktop/Repo2DAM/2DAM/Flutter1-SFR/Opcional/filas_y_columnas_anidadas/windows -BC:/Users/Pc/Desktop/Repo2DAM/2DAM/Flutter1-SFR/Opcional/filas_y_columnas_anidadas/build/windows/x64 --check-stamp-file C:/Users/Pc/Desktop/Repo2DAM/2DAM/Flutter1-SFR/Opcional/filas_y_columnas_anidadas/build/windows/x64/flutter/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
