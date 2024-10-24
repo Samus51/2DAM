@@ -28,12 +28,12 @@ public class VentanaPrincipal extends JFrame {
         contentPane.setBackground(Color.decode("#FF9505"));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
-        contentPane.setLayout(new MigLayout("", "[30px][28px][559px]", "[35px][393px]"));
+        contentPane.setLayout(new MigLayout("", "[30px][7px][596px]", "[35px][395px]"));
 
         // Crear el JTabbedPane
         tabbedPane = new JTabbedPane();
         tabbedPane.setSelectedIndex(-1);
-        contentPane.add(tabbedPane, "cell 1 1 2 1,grow");
+        contentPane.add(tabbedPane, "cell 2 1,grow");
 
         JLabel lblLogo = new JLabel();
         lblLogo.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/resources/imagen_2024-10-19_134002464 (1).png")));
@@ -42,7 +42,7 @@ public class VentanaPrincipal extends JFrame {
         JLabel lblMenu = new JLabel("");
         lblMenu.setVerticalAlignment(SwingConstants.TOP);
         lblMenu.setIcon(new ImageIcon(VentanaPrincipal.class.getResource("/resources/imagen_2024-10-19_134528012.png")));
-        contentPane.add(lblMenu, "cell 0 1,grow");
+        contentPane.add(lblMenu, "cell 0 1,growx,aligny top");
 
         popupMenu = new JPopupMenu();
         addPopup(lblMenu, popupMenu);
@@ -86,8 +86,8 @@ public class VentanaPrincipal extends JFrame {
     }
 
     private void mostrarPanel(String title, JPanel panel) {
-        tabbedPane.removeAll(); // Limpiar las pestañas existentes
-        tabbedPane.addTab(title, panel); // Añadir nuevo panel
+        tabbedPane.removeAll(); 
+        tabbedPane.addTab(title, panel); 
         tabbedPane.setDisplayedMnemonicIndexAt(0, -1);
     }
 
