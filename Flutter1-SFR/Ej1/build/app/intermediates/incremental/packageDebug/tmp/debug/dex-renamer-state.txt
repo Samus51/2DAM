@@ -1,4 +1,4 @@
-#Mon Oct 21 19:48:37 CEST 2024
+#Thu Oct 24 23:01:14 CEST 2024
 base.0=C\:\\Users\\Pc\\Desktop\\Repo2DAM\\2DAM\\Flutter1-SFR\\Ej1\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\Users\\Pc\\Desktop\\Repo2DAM\\2DAM\\Flutter1-SFR\\Ej1\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
 base.2=C\:\\Users\\Pc\\Desktop\\Repo2DAM\\2DAM\\Flutter1-SFR\\Ej1\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
