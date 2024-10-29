@@ -5,13 +5,17 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 
+import uiux.models.Clases;
 import uiux.models.Usuario;
+import uiux.practicaExamen.panels.PanelHomeAdministrador;
+import uiux.practicaExamen.panels.PanelHomeCliente;
 import uiux.practicaExamen.panels.PanelRegistro;
 
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,25 +26,33 @@ public class VentanaLogin extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtUser;
 	public static ArrayList<Usuario> listUsuario;
+	public static ArrayList<Clases> listClases;
+
+	private JPasswordField passwordField;
 
 	public VentanaLogin() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(902, 557);
-		setMinimumSize(new Dimension(600, 400)); // Tamaño mínimo para evitar distorsiones
+		setMinimumSize(new Dimension(600, 400));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout());
 		listUsuario = new ArrayList<>();
-		cargarUsuarios(); 
+		listClases = new ArrayList<>();
+		cargarUsuarios();
+		cargarClases();
 		inicializarComponentes();
 	}
 
 	public static ArrayList<Usuario> getListUsuarios() {
 		return listUsuario;
+	}
+
+	public static ArrayList<Clases> getListClases() {
+		return listClases;
 	}
 
 	private void inicializarComponentes() {
@@ -88,7 +100,7 @@ public class VentanaLogin extends JFrame {
 		GridBagLayout gbl_panelFormulario = new GridBagLayout();
 		gbl_panelFormulario.columnWidths = new int[] { 60, 86, 0 };
 		gbl_panelFormulario.rowHeights = new int[] { 20, 20, 0, 0, 0, 0, 0 };
-		gbl_panelFormulario.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_panelFormulario.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		gbl_panelFormulario.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panelFormulario.setLayout(gbl_panelFormulario);
 
@@ -99,18 +111,18 @@ public class VentanaLogin extends JFrame {
 		gbc_lblUsuario.gridx = 0;
 		gbc_lblUsuario.gridy = 1;
 		panelFormulario.add(lblUsuario, gbc_lblUsuario);
-		textField = new JTextField(10);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.anchor = GridBagConstraints.NORTH;
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 1;
-		panelFormulario.add(textField, gbc_textField);
+		txtUser = new JTextField(10);
+		GridBagConstraints gbc_txtUser = new GridBagConstraints();
+		gbc_txtUser.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtUser.anchor = GridBagConstraints.NORTH;
+		gbc_txtUser.insets = new Insets(0, 0, 5, 0);
+		gbc_txtUser.gridx = 1;
+		gbc_txtUser.gridy = 1;
+		panelFormulario.add(txtUser, gbc_txtUser);
 
 		JLabel lblContrasena = new JLabel("Contraseña:");
 		GridBagConstraints gbc_lblContrasena = new GridBagConstraints();
-		gbc_lblContrasena.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblContrasena.anchor = GridBagConstraints.EAST;
 		gbc_lblContrasena.insets = new Insets(0, 0, 5, 5);
 		gbc_lblContrasena.gridx = 0;
 		gbc_lblContrasena.gridy = 2;
@@ -129,14 +141,14 @@ public class VentanaLogin extends JFrame {
 				iniciarSesion();
 			}
 		});
-		textField_1 = new JTextField(10);
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.anchor = GridBagConstraints.NORTH;
-		gbc_textField_1.gridx = 1;
-		gbc_textField_1.gridy = 2;
-		panelFormulario.add(textField_1, gbc_textField_1);
+
+		passwordField = new JPasswordField();
+		GridBagConstraints gbc_passwordField = new GridBagConstraints();
+		gbc_passwordField.insets = new Insets(0, 0, 5, 0);
+		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_passwordField.gridx = 1;
+		gbc_passwordField.gridy = 2;
+		panelFormulario.add(passwordField, gbc_passwordField);
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton.anchor = GridBagConstraints.EAST;
@@ -157,19 +169,71 @@ public class VentanaLogin extends JFrame {
 	}
 
 	protected void iniciarSesion() {
-		// TODO Auto-generated method stub
+		String linea;
+		String usuario = txtUser.getText();
+		String contraseña = new String(passwordField.getPassword());
+		boolean usuarioEncontrado = false;
 
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("Usuarios.txt"));
+			while ((linea = br.readLine()) != null) {
+				String[] datos = linea.split(",");
+
+				if (datos[4].equals(usuario) && datos[5].equals(contraseña)) {
+					usuarioEncontrado = true;
+					System.out.println("Entrada Exitosa, Bienvenido " + usuario);
+					dispose();
+
+					if (datos[3].equalsIgnoreCase("administrador")) {
+						PanelHomeAdministrador home = new PanelHomeAdministrador();
+						System.out.println("Administrador");
+						home.setVisible(true);
+					} else if (datos[3].equalsIgnoreCase("cliente")) {
+						PanelHomeCliente home = new PanelHomeCliente();
+						home.setVisible(true);
+						System.out.println("Cliente");
+					}
+					break;
+				}
+			}
+
+			if (!usuarioEncontrado) {
+				JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos");
+				txtUser.setText("");
+				passwordField.setText("");
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Error: Archivo no encontrado");
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Error al leer el archivo");
+		}
 	}
 
 	public static void saveUsuarios() {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter("Usuarios.txt"))) {
 			for (Usuario us1 : VentanaLogin.getListUsuarios()) {
-				String linea = String.join(",", us1.getNombre(), us1.getApellidos(), us1.getFechaNacimiento(),
-						us1.getPerfil(), us1.getEmail(), us1.getContraseña());
+				String linea = String.join(",", us1.getNombre(), us1.getApellidos(), us1.getFechaNacimiento(), us1.getPerfil(),
+						us1.getEmail(), us1.getContraseña());
 				writer.write(linea);
 				writer.newLine();
 			}
 			System.out.println("Usuarios guardados con éxito.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void saveClases() {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("Clases.txt"))) {
+			for (Clases cl1 : VentanaLogin.getListClases()) {
+				String linea = String.join(",", cl1.getNombre(), cl1.getProfesor(), cl1.isTurno());
+				writer.write(linea);
+				writer.newLine();
+			}
+			System.out.println("Clases guardados con éxito.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -227,4 +291,60 @@ public class VentanaLogin extends JFrame {
 
 		return new Usuario(datos[0], datos[1], datos[2], datos[3], datos[4], datos[5]);
 	}
+
+	private Clases parsearClases(String linea) {
+		if (linea == null || linea.trim().isEmpty()) {
+			throw new IllegalArgumentException("Linea nula");
+		}
+
+		String[] datos = linea.split(",");
+
+		if (datos.length < 3) {
+			System.out.println("Línea inválida: " + linea);
+			throw new IllegalArgumentException("Datos incompletos");
+		}
+
+		return new Clases(datos[0], datos[1], datos[2]);
+	}
+
+	
+	
+	private void cargarClases() {
+		File file = new File("Clases.txt");
+
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+				System.out.println("Archivo de Clases creado: " + file.getName());
+			} catch (IOException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Error al crear el archivo: " + e.getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			String linea;
+			boolean isEmpty = true;
+
+			while ((linea = reader.readLine()) != null) {
+				Clases clase = parsearClases(linea);
+				VentanaLogin.getListClases().add(clase);
+				isEmpty = false;
+			}
+
+			if (isEmpty) {
+				JOptionPane.showMessageDialog(null, "El archivo de Clases está vacío.", "Advertencia",
+						JOptionPane.WARNING_MESSAGE);
+			} else {
+				System.out.println("Clases cargados con éxito.");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Error al cargar los Usuarios: " + e.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 }
