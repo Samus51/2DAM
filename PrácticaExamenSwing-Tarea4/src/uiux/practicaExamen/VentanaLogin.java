@@ -164,7 +164,7 @@ public class VentanaLogin extends JFrame {
 
 	protected void registrarse() {
 
-		PanelRegistro paneli = new PanelRegistro();
+		PanelRegistro paneli = new PanelRegistro(this, true);
 		paneli.setVisible(true);
 	}
 

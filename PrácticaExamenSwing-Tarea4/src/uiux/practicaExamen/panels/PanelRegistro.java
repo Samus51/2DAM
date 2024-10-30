@@ -3,6 +3,7 @@ package uiux.practicaExamen.panels;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
@@ -28,37 +29,30 @@ import java.awt.event.ActionEvent;
 
 public class PanelRegistro extends JDialog {
 
-    private static final long serialVersionUID = 1L;
-    private final JPanel contentPanel = new JPanel();
-    private JTextField txtNombre;
-    private JTextField txtApellidos;
-    private JTextField txtEmail;
-    private JPasswordField passContraseña;
-    private JPasswordField passConfirmarContraseña;
-    private JPanel panelTitulo;
-    private JPanel panelCampos;
-    private JLabel lblNombre;
-    private JLabel lblApellidos;
-    private JDateChooser dateUsuario;
-    private JLabel lblNacimiento;
-    private JLabel lblPerfil;
-    private JComboBox<String> cbPerfil;
-    private JLabel lblEmail;
-    private JLabel lblContraseña;
-    private JLabel lblConfirmarContraseña;
+	private static final long serialVersionUID = 1L;
+	private final JPanel contentPanel = new JPanel();
+	private JTextField txtNombre;
+	private JTextField txtApellidos;
+	private JTextField txtEmail;
+	private JPasswordField passContraseña;
+	private JPasswordField passConfirmarContraseña;
+	private JPanel panelTitulo;
+	private JPanel panelCampos;
+	private JLabel lblNombre;
+	private JLabel lblApellidos;
+	private JDateChooser dateUsuario;
+	private JLabel lblNacimiento;
+	private JLabel lblPerfil;
+	private JComboBox<String> cbPerfil;
+	private JLabel lblEmail;
+	private JLabel lblContraseña;
+	private JLabel lblConfirmarContraseña;
+	private VentanaLogin vetanin;
 
-    public static void main(String[] args) {
-        try {
-            PanelRegistro dialog = new PanelRegistro();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public PanelRegistro() {
-        setBounds(100, 100, 524, 661);
+	public PanelRegistro(JFrame parent, boolean modal) {
+				vetanin = (VentanaLogin) parent;
+        this.setModal(modal);
+				setBounds(100, 100, 524, 661);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -142,49 +136,49 @@ public class PanelRegistro extends JDialog {
         contentPanel.setLayout(gl_contentPanel);
     }
 
-    protected void guardarUsuario() {
-        String nombre = txtNombre.getText().trim();
-        String apellidos = txtApellidos.getText().trim();
-        Date fechaRaw = dateUsuario.getDate(); 
-        String perfil = cbPerfil.getSelectedItem() != null ? cbPerfil.getSelectedItem().toString() : ""; 
-        String email = txtEmail.getText().trim();
-        String contraseña = new String(passContraseña.getPassword()).trim();
-        String confirmContraseña = new String(passConfirmarContraseña.getPassword()).trim();
+	protected void guardarUsuario() {
+		String nombre = txtNombre.getText().trim();
+		String apellidos = txtApellidos.getText().trim();
+		Date fechaRaw = dateUsuario.getDate();
+		String perfil = cbPerfil.getSelectedItem() != null ? cbPerfil.getSelectedItem().toString() : "";
+		String email = txtEmail.getText().trim();
+		String contraseña = new String(passContraseña.getPassword()).trim();
+		String confirmContraseña = new String(passConfirmarContraseña.getPassword()).trim();
 
-        if (nombre.isEmpty() || apellidos.isEmpty() || perfil.isEmpty() ||
-                email.isEmpty() || contraseña.isEmpty() || confirmContraseña.isEmpty() || fechaRaw == null) {
-            JOptionPane.showMessageDialog(this, "No se puede crear un usuario con campos vacíos.", "Error", JOptionPane.ERROR_MESSAGE);
-            resetearCampos();
-            return; 
-        }
+		if (nombre.isEmpty() || apellidos.isEmpty() || perfil.isEmpty() || email.isEmpty() || contraseña.isEmpty()
+				|| confirmContraseña.isEmpty() || fechaRaw == null) {
+			JOptionPane.showMessageDialog(this, "No se puede crear un usuario con campos vacíos.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			resetearCampos();
+			return;
+		}
 
-        for (Usuario u : VentanaLogin.getListUsuarios()) {
-            if (u.getEmail().trim().equalsIgnoreCase(email) &&
-                u.getNombre().trim().equalsIgnoreCase(nombre) &&
-                u.getApellidos().trim().equalsIgnoreCase(apellidos)) {
-                JOptionPane.showMessageDialog(this, "No puedes crear un usuario ya existente.");
-                resetearCampos();
-                return; 
-            }
-        }
+		for (Usuario u : VentanaLogin.getListUsuarios()) {
+			if (u.getEmail().trim().equalsIgnoreCase(email) && u.getNombre().trim().equalsIgnoreCase(nombre)
+					&& u.getApellidos().trim().equalsIgnoreCase(apellidos)) {
+				JOptionPane.showMessageDialog(this, "No puedes crear un usuario ya existente.");
+				resetearCampos();
+				return;
+			}
+		}
 
-        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy"); 
-        String fechaNacimiento = dt.format(fechaRaw);
+		SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy");
+		String fechaNacimiento = dt.format(fechaRaw);
 
-        Usuario user = new Usuario(nombre, apellidos, fechaNacimiento, perfil, email, contraseña);
-        VentanaLogin.getListUsuarios().add(user);
-        JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente.");
-        VentanaLogin.saveUsuarios();
-        dispose();
-    }
+		Usuario user = new Usuario(nombre, apellidos, fechaNacimiento, perfil, email, contraseña);
+		VentanaLogin.getListUsuarios().add(user);
+		JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente.");
+		VentanaLogin.saveUsuarios();
+		dispose();
+	}
 
-    private void resetearCampos() {
-        txtNombre.setText("");
-        txtApellidos.setText("");
-        txtEmail.setText("");
-        cbPerfil.setSelectedIndex(-1); 
-        passContraseña.setText("");
-        passConfirmarContraseña.setText("");
-        dateUsuario.setDate(null); 
-    }
+	private void resetearCampos() {
+		txtNombre.setText("");
+		txtApellidos.setText("");
+		txtEmail.setText("");
+		cbPerfil.setSelectedIndex(-1);
+		passContraseña.setText("");
+		passConfirmarContraseña.setText("");
+		dateUsuario.setDate(null);
+	}
 }

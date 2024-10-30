@@ -27,18 +27,20 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class PanelClasesAdministrador extends JFrame {
+public class PanelClasesAdministrador extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNombreClase;
 	private JTextField txtProfesor;
 	private JRadioButton rdbMañana;
 	private JRadioButton rdbTarde;
-
+	private PanelHomeAdministrador home;
 	/**
 	 * Create the panel.
 	 */
-	public PanelClasesAdministrador() {
+	public PanelClasesAdministrador(JFrame parent, boolean modal) {
+		home = (PanelHomeAdministrador) parent;
+		this.setModal(modal);
 		setSize(new Dimension(600, 400));
 		setResizable(false);
 		getContentPane().setLayout(new BorderLayout(0, 0));

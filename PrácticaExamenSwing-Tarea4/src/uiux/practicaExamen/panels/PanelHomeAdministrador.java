@@ -146,7 +146,7 @@ public class PanelHomeAdministrador extends JFrame {
 	}
 
 	protected void addClase() {
-		PanelClasesAdministrador clases = new PanelClasesAdministrador();
+		PanelClasesAdministrador clases = new PanelClasesAdministrador(this,true);
 		clases.setVisible(true);
 	}
 
