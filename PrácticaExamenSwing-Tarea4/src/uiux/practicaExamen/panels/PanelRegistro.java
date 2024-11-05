@@ -59,10 +59,8 @@ public class PanelRegistro extends JDialog {
 		initialize();
 		setResizable(true);
 	
-	
 	    this.setMinimumSize(new Dimension(400, 300)); 
 	    this.setMaximumSize(new Dimension(600, 800));
-
 	}
 
 	/**
@@ -210,12 +208,12 @@ public class PanelRegistro extends JDialog {
 	 * Metodo que resetea los campos de la pantalla
 	 */
 	private void resetearCampos() {
-		txtNombre.setText("");
-		txtApellidos.setText("");
-		txtEmail.setText("");
-		cbPerfil.setSelectedIndex(-1);
-		passContraseña.setText("");
-		passConfirmarContraseña.setText("");
-		dateUsuario.setDate(null);
+	    txtNombre.setText("");
+	    txtApellidos.setText("");
+	    txtEmail.setText("");
+	    cbPerfil.setSelectedIndex(-1);
+	    passContraseña.setText("");
+	    passConfirmarContraseña.setText("");
+	    dateUsuario.setDate(null);
 	}
 }

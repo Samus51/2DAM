@@ -31,6 +31,7 @@ public class PanelClasesAdministrador extends JDialog {
 	private JRadioButton rdbTarde;
 	PanelHomeAdministrador padre;
 
+	private PanelHomeAdministrador home;
 	/**
 	 * Create the panel.
 	 */
