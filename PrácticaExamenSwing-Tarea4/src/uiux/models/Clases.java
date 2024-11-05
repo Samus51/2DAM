@@ -29,7 +29,7 @@ public class Clases {
 	/**
 	 * @return the turno
 	 */
-	public String isTurno() {
+	public String getTurno() {
 		return turno;
 	}
 

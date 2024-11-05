@@ -1,12 +1,8 @@
 package uiux.practicaExamen.panels;
 
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import uiux.models.Clases;
-import uiux.models.Usuario;
 import uiux.practicaExamen.VentanaLogin;
 
 import java.awt.BorderLayout;
@@ -22,26 +18,36 @@ import java.awt.Insets;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.ButtonGroup;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class PanelClasesAdministrador extends JFrame {
+public class PanelClasesAdministrador extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNombreClase;
 	private JTextField txtProfesor;
 	private JRadioButton rdbMañana;
 	private JRadioButton rdbTarde;
+	PanelHomeAdministrador padre;
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelClasesAdministrador() {
+	public PanelClasesAdministrador(JFrame parent, boolean modal) {
+		initialize();
+		padre = (PanelHomeAdministrador) parent;
+		this.setModal(modal);
+	}
+
+	/**
+	 * Metodo que inicializa los componentes de la ventana
+	 */
+	private void initialize() {
 		setSize(new Dimension(600, 400));
 		setResizable(false);
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		JPanel panelTitulo = new JPanel();
 		panelTitulo.setBackground(new Color(72, 209, 204));
@@ -125,47 +131,51 @@ public class PanelClasesAdministrador extends JFrame {
 		gbc_btnNewButton.gridx = 9;
 		gbc_btnNewButton.gridy = 8;
 		panelCentral.add(btnNewButton, gbc_btnNewButton);
+
 	}
 
+	/**
+	 * Metodo que añade una clase al repertorio de clases que elegir para los
+	 * clientes
+	 */
 	protected void addClase() {
-    String nombre = txtNombreClase.getText();
-    String profesor = txtProfesor.getText();
-    String turno = "";
+		String nombre = txtNombreClase.getText();
+		String profesor = txtProfesor.getText();
+		String turno = "";
 
-    if (nombre.isBlank() || profesor.isBlank()) {
-        JOptionPane.showMessageDialog(this, "Debes rellenar los campos para crear la clase");
-        return;
-    }
+		if (nombre.isBlank() || profesor.isBlank()) {
+			JOptionPane.showMessageDialog(this, "Debes rellenar los campos para crear la clase");
+			return;
+		}
 
-    if (!rdbMañana.isSelected() && !rdbTarde.isSelected()) {
-        JOptionPane.showMessageDialog(this, "Debes seleccionar un turno (Mañana o Tarde)");
-        return;
-    }
+		if (!rdbMañana.isSelected() && !rdbTarde.isSelected()) {
+			JOptionPane.showMessageDialog(this, "Debes seleccionar un turno (Mañana o Tarde)");
+			return;
+		}
 
-    if (rdbMañana.isSelected() && rdbTarde.isSelected()) {
-        JOptionPane.showMessageDialog(this, "No puedes crear una clase con 2 turnos");
-        return;
-    }
+		if (rdbMañana.isSelected() && rdbTarde.isSelected()) {
+			JOptionPane.showMessageDialog(this, "No puedes crear una clase con 2 turnos");
+			return;
+		}
 
-    if (rdbMañana.isSelected()) {
-        turno = "Mañana";
-    } else {
-        turno = "Tarde";
-    }
+		if (rdbMañana.isSelected()) {
+			turno = "Mañana";
+		} else {
+			turno = "Tarde";
+		}
 
-    for (Clases cl : VentanaLogin.getListClases()) {
-        if (cl.getNombre().trim().equalsIgnoreCase(nombre) && 
-            cl.getProfesor().trim().equalsIgnoreCase(profesor) &&
-            cl.isTurno().trim().equalsIgnoreCase(turno)) {
-            JOptionPane.showMessageDialog(this, "No puedes crear una Clase ya existente.");
-            return;
-        }
-    }
+		for (Clases cl : VentanaLogin.getListClases()) {
+			if (cl.getNombre().trim().equalsIgnoreCase(nombre) && cl.getProfesor().trim().equalsIgnoreCase(profesor)
+					&& cl.getTurno().trim().equalsIgnoreCase(turno)) {
+				JOptionPane.showMessageDialog(this, "No puedes crear una Clase ya existente.");
+				return;
+			}
+		}
 
-    Clases clases = new Clases(nombre, profesor, turno);
-    VentanaLogin.getListClases().add(clases);
-    VentanaLogin.saveClases();
-    JOptionPane.showMessageDialog(this, "Clase de " + nombre + " creada con éxito");
-    dispose();
-}
+		Clases clases = new Clases(nombre, profesor, turno);
+		VentanaLogin.getListClases().add(clases);
+		VentanaLogin.saveClases();
+		JOptionPane.showMessageDialog(this, "Clase de " + nombre + " creada con éxito");
+		dispose();
+	}
 }

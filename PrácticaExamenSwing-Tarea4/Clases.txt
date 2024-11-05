@@ -1,3 +1,6 @@
 Spinning,Manu,Mañana
 Dominadas,Jose,Tarde
 Pecho,Antonio,Tarde
+CrossFit,Diego,Mañana
+Spinning,Mario,Mañana
+Spinning,Manu,Tarde

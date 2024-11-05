@@ -8,6 +8,7 @@ public class Usuario implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -2251029700939550463L;
+
 	public Usuario(String nombre, String apellidos, String fechaNacimiento, String perfil, String email,
 			String contraseña) {
 		this.nombre = nombre;
@@ -102,11 +103,11 @@ public class Usuario implements Serializable {
 		this.contraseña = contraseña;
 	}
 
+	
 	private String nombre;
 	private String apellidos;
 	private String fechaNacimiento;
 	private String perfil;
 	private String email;
 	private String contraseña;
-
 }

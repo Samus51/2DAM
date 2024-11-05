@@ -3,6 +3,7 @@ package uiux.practicaExamen.panels;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
@@ -25,166 +26,196 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 
 public class PanelRegistro extends JDialog {
 
-    private static final long serialVersionUID = 1L;
-    private final JPanel contentPanel = new JPanel();
-    private JTextField txtNombre;
-    private JTextField txtApellidos;
-    private JTextField txtEmail;
-    private JPasswordField passContraseña;
-    private JPasswordField passConfirmarContraseña;
-    private JPanel panelTitulo;
-    private JPanel panelCampos;
-    private JLabel lblNombre;
-    private JLabel lblApellidos;
-    private JDateChooser dateUsuario;
-    private JLabel lblNacimiento;
-    private JLabel lblPerfil;
-    private JComboBox<String> cbPerfil;
-    private JLabel lblEmail;
-    private JLabel lblContraseña;
-    private JLabel lblConfirmarContraseña;
+	private static final long serialVersionUID = 1L;
+	private final JPanel contentPanel = new JPanel();
+	private JTextField txtNombre;
+	private JTextField txtApellidos;
+	private JTextField txtEmail;
+	private JPasswordField passContraseña;
+	private JPasswordField passConfirmarContraseña;
+	private JPanel panelTitulo;
+	private JPanel panelCampos;
+	private JLabel lblNombre;
+	private JLabel lblApellidos;
+	private JDateChooser dateUsuario;
+	private JLabel lblNacimiento;
+	private JLabel lblPerfil;
+	private JComboBox<String> cbPerfil;
+	private JLabel lblEmail;
+	private JLabel lblContraseña;
+	private JLabel lblConfirmarContraseña;
+	VentanaLogin pantallaPrincipal;
 
-    public static void main(String[] args) {
-        try {
-            PanelRegistro dialog = new PanelRegistro();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public PanelRegistro(JFrame parent, boolean modal) {
+		getContentPane().setPreferredSize(new Dimension(250, 200));
+		getContentPane().setMinimumSize(new Dimension(125, 150));
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		pantallaPrincipal = (VentanaLogin) parent;
+		this.setModal(modal);
+		initialize();
+		setResizable(true);
+	
+	
+	    this.setMinimumSize(new Dimension(400, 300)); 
+	    this.setMaximumSize(new Dimension(600, 800));
 
-    public PanelRegistro() {
-        setBounds(100, 100, 524, 661);
-        getContentPane().setLayout(new BorderLayout());
-        contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        getContentPane().add(contentPanel, BorderLayout.CENTER);
-        {
-            panelTitulo = new JPanel();
-            panelTitulo.setForeground(new Color(255, 255, 255));
-            panelTitulo.setBackground(new Color(0, 191, 255));
-            {
-                JLabel lblTitulo = new JLabel("Registro de Usuario");
-                lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-                lblTitulo.setForeground(new Color(255, 255, 255));
-                lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 15));
-                panelTitulo.add(lblTitulo);
-            }
-        }
-        {
-            panelCampos = new JPanel();
+	}
 
-            lblNombre = new JLabel("Nombre");
-            lblApellidos = new JLabel("Apellidos");
-            lblNacimiento = new JLabel("Fecha de Nacimiento");
-            lblPerfil = new JLabel("Perfil");
-            lblEmail = new JLabel("Email");
-            lblContraseña = new JLabel("Contraseña");
-            lblConfirmarContraseña = new JLabel("Confirmar Contraseña");
+	/**
+	 * Metodo que inicializa los componentes de la ventana
+	 */
+	private void initialize() {
 
-            txtNombre = new JTextField();
-            txtNombre.setColumns(10);
+		setBounds(100, 100, 524, 661);
+		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		{
+			panelTitulo = new JPanel();
+			panelTitulo.setForeground(new Color(255, 255, 255));
+			panelTitulo.setBackground(new Color(0, 191, 255));
+			{
+				JLabel lblTitulo = new JLabel("Registro de Usuario");
+				lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+				lblTitulo.setForeground(new Color(255, 255, 255));
+				lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 15));
+				panelTitulo.add(lblTitulo);
+			}
+		}
+		{
+			panelCampos = new JPanel();
+			panelCampos.setPreferredSize(new Dimension(150, 100));
+			panelCampos.setMinimumSize(new Dimension(100, 100));
 
-            txtApellidos = new JTextField();
-            txtApellidos.setColumns(10);
+			lblNombre = new JLabel("Nombre");
+			lblApellidos = new JLabel("Apellidos");
+			lblNacimiento = new JLabel("Fecha de Nacimiento");
+			lblPerfil = new JLabel("Perfil");
+			lblEmail = new JLabel("Email");
+			lblContraseña = new JLabel("Contraseña");
+			lblConfirmarContraseña = new JLabel("Confirmar Contraseña");
 
-            cbPerfil = new JComboBox<String>();
-            cbPerfil.setModel(new DefaultComboBoxModel<String>(new String[] { "Cliente", "Administrador" }));
+			txtNombre = new JTextField();
+			txtNombre.setColumns(10);
 
-            passConfirmarContraseña = new JPasswordField();
-        }
-        GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
-        gl_contentPanel.setHorizontalGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-                .addComponent(panelTitulo, GroupLayout.PREFERRED_SIZE, 478, GroupLayout.PREFERRED_SIZE)
-                .addComponent(panelCampos, GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE));
-        gl_contentPanel.setVerticalGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_contentPanel.createSequentialGroup()
-                        .addComponent(panelTitulo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(ComponentPlacement.RELATED)
-                        .addComponent(panelCampos, GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE).addContainerGap()));
-        panelCampos.setLayout(new GridLayout(0, 2, 10, 50));
-        panelCampos.add(lblNombre);
-        panelCampos.add(txtNombre);
-        panelCampos.add(lblApellidos);
-        panelCampos.add(txtApellidos);
-        panelCampos.add(lblNacimiento);
+			txtApellidos = new JTextField();
+			txtApellidos.setColumns(10);
 
-        dateUsuario = new JDateChooser();
-        panelCampos.add(dateUsuario);
-        panelCampos.add(lblPerfil);
-        panelCampos.add(cbPerfil);
-        panelCampos.add(lblEmail);
+			cbPerfil = new JComboBox<String>();
+			cbPerfil.setModel(new DefaultComboBoxModel<String>(new String[] { "Cliente", "Administrador" }));
 
-        txtEmail = new JTextField();
-        txtEmail.setColumns(10);
-        panelCampos.add(txtEmail);
-        panelCampos.add(lblContraseña);
+			passConfirmarContraseña = new JPasswordField();
+		}
+		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
+		gl_contentPanel.setHorizontalGroup(
+			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				.addComponent(panelCampos, GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
+				.addComponent(panelTitulo, GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
+		);
+		gl_contentPanel.setVerticalGroup(
+			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addComponent(panelTitulo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panelCampos, GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		panelCampos.setLayout(new GridLayout(0, 2, 10, 50));
+		panelCampos.add(lblNombre);
+		panelCampos.add(txtNombre);
+		panelCampos.add(lblApellidos);
+		panelCampos.add(txtApellidos);
+		panelCampos.add(lblNacimiento);
 
-        passContraseña = new JPasswordField();
-        panelCampos.add(passContraseña);
-        panelCampos.add(lblConfirmarContraseña);
-        panelCampos.add(passConfirmarContraseña);
+		dateUsuario = new JDateChooser();
+		panelCampos.add(dateUsuario);
+		panelCampos.add(lblPerfil);
+		panelCampos.add(cbPerfil);
+		panelCampos.add(lblEmail);
 
-        JLabel lblNewLabel = new JLabel("");
-        panelCampos.add(lblNewLabel);
+		txtEmail = new JTextField();
+		txtEmail.setColumns(10);
+		panelCampos.add(txtEmail);
+		panelCampos.add(lblContraseña);
 
-        JButton btnNewButton = new JButton("Crear");
-        btnNewButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                guardarUsuario();
-            }
-        });
-        panelCampos.add(btnNewButton);
-        contentPanel.setLayout(gl_contentPanel);
-    }
+		passContraseña = new JPasswordField();
+		panelCampos.add(passContraseña);
+		panelCampos.add(lblConfirmarContraseña);
+		panelCampos.add(passConfirmarContraseña);
 
-    protected void guardarUsuario() {
-        String nombre = txtNombre.getText().trim();
-        String apellidos = txtApellidos.getText().trim();
-        Date fechaRaw = dateUsuario.getDate(); 
-        String perfil = cbPerfil.getSelectedItem() != null ? cbPerfil.getSelectedItem().toString() : ""; 
-        String email = txtEmail.getText().trim();
-        String contraseña = new String(passContraseña.getPassword()).trim();
-        String confirmContraseña = new String(passConfirmarContraseña.getPassword()).trim();
+		JLabel lblNewLabel = new JLabel("");
+		panelCampos.add(lblNewLabel);
 
-        if (nombre.isEmpty() || apellidos.isEmpty() || perfil.isEmpty() ||
-                email.isEmpty() || contraseña.isEmpty() || confirmContraseña.isEmpty() || fechaRaw == null) {
-            JOptionPane.showMessageDialog(this, "No se puede crear un usuario con campos vacíos.", "Error", JOptionPane.ERROR_MESSAGE);
-            resetearCampos();
-            return; 
-        }
+		JButton btnNewButton = new JButton("Crear");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				guardarUsuario();
+			}
+		});
+		panelCampos.add(btnNewButton);
+		contentPanel.setLayout(gl_contentPanel);
 
-        for (Usuario u : VentanaLogin.getListUsuarios()) {
-            if (u.getEmail().trim().equalsIgnoreCase(email) &&
-                u.getNombre().trim().equalsIgnoreCase(nombre) &&
-                u.getApellidos().trim().equalsIgnoreCase(apellidos)) {
-                JOptionPane.showMessageDialog(this, "No puedes crear un usuario ya existente.");
-                resetearCampos();
-                return; 
-            }
-        }
+	}
 
-        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy"); 
-        String fechaNacimiento = dt.format(fechaRaw);
+	/**
+	 * Metodo que guarda el usuario registrado y comprueba que los campos sean
+	 * correctos y no vacios oque no haya un usuario duplicado
+	 */
+	protected void guardarUsuario() {
+	    String nombre = txtNombre.getText().trim();
+	    String apellidos = txtApellidos.getText().trim();
+	    Date fechaRaw = dateUsuario.getDate();
+	    String perfil = cbPerfil.getSelectedItem() != null ? cbPerfil.getSelectedItem().toString() : "";
+	    String email = txtEmail.getText().trim();
+	    String contraseña = new String(passContraseña.getPassword()).trim();
+	    String confirmContraseña = new String(passConfirmarContraseña.getPassword()).trim();
 
-        Usuario user = new Usuario(nombre, apellidos, fechaNacimiento, perfil, email, contraseña);
-        VentanaLogin.getListUsuarios().add(user);
-        JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente.");
-        VentanaLogin.saveUsuarios();
-        dispose();
-    }
+	    if (nombre.isEmpty() || apellidos.isEmpty() || perfil.isEmpty() || email.isEmpty() || contraseña.isEmpty()
+	            || confirmContraseña.isEmpty() || fechaRaw == null) {
+	        JOptionPane.showMessageDialog(this, "No se puede crear un usuario con campos vacíos.", "Error",
+	                JOptionPane.ERROR_MESSAGE);
+	        resetearCampos();
+	        return;
+	    }
 
-    private void resetearCampos() {
-        txtNombre.setText("");
-        txtApellidos.setText("");
-        txtEmail.setText("");
-        cbPerfil.setSelectedIndex(-1); 
-        passContraseña.setText("");
-        passConfirmarContraseña.setText("");
-        dateUsuario.setDate(null); 
-    }
+	    for (Usuario u : VentanaLogin.getListUsuarios()) {
+	        if (u.getEmail().trim().equalsIgnoreCase(email) && u.getNombre().trim().equalsIgnoreCase(nombre)
+	                && u.getApellidos().trim().equalsIgnoreCase(apellidos)) {
+	            JOptionPane.showMessageDialog(this, "No puedes crear un usuario ya existente.");
+	            resetearCampos();
+	            return;
+	        }
+	    }
+
+	    if (!contraseña.equals(confirmContraseña)) {  
+	        JOptionPane.showMessageDialog(this, "La contraseña no coincide");
+	        return; 
+	    }
+
+	    SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy");
+	    String fechaNacimiento = dt.format(fechaRaw);
+
+	    Usuario user = new Usuario(nombre, apellidos, fechaNacimiento, perfil, email, contraseña);
+	    VentanaLogin.getListUsuarios().add(user);
+	    JOptionPane.showMessageDialog(this, "Usuario registrado exitosamente.");
+	    VentanaLogin.saveUsuarios();
+	    dispose();
+	}
+
+	/**
+	 * Metodo que resetea los campos de la pantalla
+	 */
+	private void resetearCampos() {
+		txtNombre.setText("");
+		txtApellidos.setText("");
+		txtEmail.setText("");
+		cbPerfil.setSelectedIndex(-1);
+		passContraseña.setText("");
+		passConfirmarContraseña.setText("");
+		dateUsuario.setDate(null);
+	}
 }
