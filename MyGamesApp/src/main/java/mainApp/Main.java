@@ -23,7 +23,7 @@ public class Main extends Application {
             scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
 
             // Establecer la escena y mostrar la ventana
-            primaryStage.setTitle("Mi aplicación JavaFX");
+            primaryStage.setTitle("MyGames");
             primaryStage.setScene(scene);
             primaryStage.show();
 
