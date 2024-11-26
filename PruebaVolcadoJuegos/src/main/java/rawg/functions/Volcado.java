@@ -28,19 +28,12 @@ import utils.rawg.PlataformaPadre;
 
 public class Volcado {
 
-	private static final String API_URL_JUEGOS = "https://api.rawg.io/api/games/3498?key=b468c1c7580c4f269ba2638debdf4c84";
-	private static final String API_URL_1JUEGO = "https://api.rawg.io/api/games/3498?key=b468c1c7580c4f269ba2638debdf4c84";
+	private static final String API_URL_JUEGOS = "https://api.rawg.io/api/games?key=b468c1c7580c4f269ba2638debdf4c84&page_size=20";
+	private static final String API_URL_1JUEGO = "https://api.rawg.io/api/games/3497?key=b468c1c7580c4f269ba2638debdf4c84";
 
 	public static void main(String[] args) {
 
-		System.out.println("Carga de Devs");
-		try {
-			getListaDevs();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Terminado");
+		System.out.println(getJuego().getName());
 	}
 
 	public static List<Juego> getJuegos() {
@@ -66,7 +59,7 @@ public class Volcado {
 				JSONArray juegosArray = objetoJSON.getJSONArray("results");
 
 				// Obtener listas de desarrolladores, géneros y plataformas
-				List<Developer> listaDevs = getListaDevs();
+			//	List<Developer> listaDevs = getListaDevs();
 				List<Genero> listaGeneros = getListaGeneros();
 				List<PlataformaPadre> listaPlataformasPadres = getGrupoPlataformas();
 
@@ -80,18 +73,14 @@ public class Volcado {
 
 					// Obtener el ID del desarrollador
 					int idDesarrollador = -1;
-					if (juegoJSON.has("developers") && juegoJSON.get("developers") instanceof JSONArray) {
-						JSONArray developers = juegoJSON.getJSONArray("developers");
-						if (developers.length() > 0) {
-							String nombreDev = developers.getJSONObject(0).optString("name", "");
-							for (Developer dev : listaDevs) {
-								if (dev.getName_dev().equalsIgnoreCase(nombreDev)) {
-									idDesarrollador = dev.getId_dev();
-									break;
-								}
-							}
-						}
-					}
+					/*
+					 * if (juegoJSON.has("developers") && juegoJSON.get("developers") instanceof
+					 * JSONArray) { JSONArray developers = juegoJSON.getJSONArray("developers"); if
+					 * (developers.length() > 0) { String nombreDev =
+					 * developers.getJSONObject(0).optString("name", ""); for (Developer dev :
+					 * listaDevs) { if (dev.getName_dev().equalsIgnoreCase(nombreDev)) {
+					 * idDesarrollador = dev.getId_dev(); break; } } } }
+					 */
 
 					// Obtener el ID del género
 					int idGenero = -1;
@@ -127,7 +116,7 @@ public class Volcado {
 					}
 
 					// Crear el objeto Juego
-					Juego juego = new Juego(nombre, descripcion, fechaLanzamiento, idDesarrollador, idGenero,
+					Juego juego = new Juego(nombre, descripcion, fechaLanzamiento, -1, idGenero,
 							idPlataforma, false, // creadoPorUsuario
 							-1, // idUsuario (por defecto -1)
 							tiempoDeJuego);
@@ -146,98 +135,88 @@ public class Volcado {
 	}
 
 	public static Juego getJuego() {
-		Juego juego = null;
-		try {
-			URI uri = new URI(API_URL_1JUEGO);
-			URL url = uri.toURL();
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
-			System.out.println("Código de Conexión: " + connection.getResponseCode());
+    Juego juego = null;
+    try {
+        URI uri = new URI(API_URL_1JUEGO);
+        URL url = uri.toURL();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        System.out.println("Código de Conexión: " + connection.getResponseCode());
 
-			if (connection.getResponseCode() == 200) {
-				BufferedReader entradaApi = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				StringBuilder response = new StringBuilder();
-				String line;
+        if (connection.getResponseCode() == 200) {
+            BufferedReader entradaApi = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
 
-				while ((line = entradaApi.readLine()) != null) {
-					response.append(line);
-				}
-				entradaApi.close();
-				JSONObject juegoJSON = new JSONObject(response.toString());
+            while ((line = entradaApi.readLine()) != null) {
+                response.append(line);
+            }
+            entradaApi.close();
+            JSONObject juegoJSON = new JSONObject(response.toString());
 
-				String nombre = juegoJSON.optString("name", "Nombre no disponible");
-				String descripcion = juegoJSON.optString("description", "Descripción no disponible");
-				String fechaLanzamiento = juegoJSON.optString("released", "No disponible");
-				int tiempoDeJuego = juegoJSON.optInt("playtime", 0);
+            String nombre = juegoJSON.optString("name", "Nombre no disponible");
+            String descripcion = juegoJSON.optString("description", "Descripción no disponible");
+            String fechaLanzamiento = juegoJSON.optString("released", "No disponible");
+            int tiempoDeJuego = juegoJSON.optInt("playtime", 0);
 
-				// Obtener listas de desarrolladores, géneros y plataformas
-				List<Developer> listaDevs = getListaDevs();
-				List<Genero> listaGeneros = getListaGeneros();
-				List<PlataformaPadre> listaPlataformasPadres = getGrupoPlataformas();
+            // Obtener listas de generos y plataformas
+            List<Genero> listaGeneros = getListaGeneros();
+            List<PlataformaPadre> listaPlataformasPadres = getGrupoPlataformas();
 
-				// Obtener el ID del desarrollador
-				int idDesarrollador = -1;
-				if (juegoJSON.has("developers") && juegoJSON.get("developers") instanceof JSONArray) {
-					JSONArray developers = juegoJSON.getJSONArray("developers");
-					if (developers.length() > 0) {
-						String nombreDev = developers.getJSONObject(0).optString("name", "");
-						System.out.println("Developer Name: " + nombreDev); // Imprime el nombre del desarrollador para
-																			// ver si coincide
+            // Obtener el ID del desarrollador
+            int idDesarrollador = -1;
+            if (juegoJSON.has("developers") && juegoJSON.get("developers") instanceof JSONArray) {
+                JSONArray developers = juegoJSON.getJSONArray("developers");
+                if (developers.length() > 0) {
+                    String nombreDev = developers.getJSONObject(0).optString("name", "");
+                    idDesarrollador = developers.getJSONObject(0).optInt("id", 404);
+                    System.out.println("Developer Name: " + nombreDev);
+                    System.out.println("Id Developer: " + idDesarrollador);
+                }
+            }
 
-						// Buscar el ID del desarrollador en la lista de desarrolladores
-						for (Developer dev : listaDevs) {
-							if (dev.getName_dev().trim().equalsIgnoreCase(nombreDev.trim())) {
-								idDesarrollador = dev.getId_dev();
-								break;
-							}
-						}
-					}
-				}
+            // Obtener el ID del género
+            int idGenero = -1;
+            if (juegoJSON.has("genres") && juegoJSON.get("genres") instanceof JSONArray) {
+                JSONArray generos = juegoJSON.getJSONArray("genres");
+                if (generos.length() > 0) {
+                    String nombreGenero = generos.getJSONObject(0).optString("name", "");
+                    for (Genero genero : listaGeneros) {
+                        if (genero.getNombre().equalsIgnoreCase(nombreGenero)) {
+                            idGenero = genero.getId_genero();
+                            break;
+                        }
+                    }
+                }
+            }
 
-				// Obtener el ID del género
-				int idGenero = -1;
-				if (juegoJSON.has("genres") && juegoJSON.get("genres") instanceof JSONArray) {
-					JSONArray generos = juegoJSON.getJSONArray("genres");
-					if (generos.length() > 0) {
-						String nombreGenero = generos.getJSONObject(0).optString("name", "");
-						for (Genero genero : listaGeneros) {
-							if (genero.getNombre().equalsIgnoreCase(nombreGenero)) {
-								idGenero = genero.getId_genero();
-								break;
-							}
-						}
-					}
-				}
+            // Obtener las plataformas y almacenarlas en una lista
+            List<Plataforma> plataformasList = new ArrayList<>();
+            if (juegoJSON.has("platforms") && juegoJSON.get("platforms") instanceof JSONArray) {
+                JSONArray plataformas = juegoJSON.getJSONArray("platforms");
+                for (int i = 0; i < plataformas.length(); i++) {
+                    String nombrePlataforma = plataformas.getJSONObject(i).getJSONObject("platform").optString("name", "");
+                    int idPlataforma = plataformas.getJSONObject(i).getJSONObject("platform").optInt("id", 404);
 
-				// Obtener el ID de la plataforma
-				int idPlataforma = -1;
-				if (juegoJSON.has("platforms") && juegoJSON.get("platforms") instanceof JSONArray) {
-					JSONArray plataformas = juegoJSON.getJSONArray("platforms");
-					if (plataformas.length() > 0) {
-						String nombrePlataforma = plataformas.getJSONObject(0).getJSONObject("platform")
-								.optString("name", "");
-						for (PlataformaPadre plataformaPadre : listaPlataformasPadres) {
-							for (Plataforma plataformaHijo : plataformaPadre.getPlataformas()) {
-								if (plataformaHijo.getNombre().equalsIgnoreCase(nombrePlataforma)) {
-									idPlataforma = plataformaHijo.getId_plataforma();
-									break;
-								}
-							}
-						}
-					}
-				}
+                    // Crear un objeto Plataforma con los datos obtenidos
+                    Plataforma plataforma = new Plataforma(idPlataforma, nombrePlataforma);
 
-				// Crear el objeto Juego
-				juego = new Juego(nombre, descripcion, fechaLanzamiento, idDesarrollador, idGenero, idPlataforma, false, // creadoPorUsuario
-						-1, // idUsuario (por defecto -1)
-						tiempoDeJuego);
-			}
-		} catch (URISyntaxException | IOException e) {
-			e.printStackTrace();
-		}
+                    // Añadir la plataforma a la lista
+                    plataformasList.add(plataforma);
+                }
+            }
 
-		return juego;
-	}
+            // Crear el objeto Juego, pasando la lista de plataformas
+            juego = new Juego(nombre, descripcion, fechaLanzamiento, idDesarrollador, idGenero, plataformasList, false, // creadoPorUsuario
+                    -1, // idUsuario (por defecto -1)
+                    tiempoDeJuego);
+        }
+    } catch (URISyntaxException | IOException e) {
+        e.printStackTrace();
+    }
+
+    return juego;
+}
 
 	private static List<PlataformaPadre> getGrupoPlataformas() {
 		String PlataformasPadreUri = "https://api.rawg.io/api/platforms/lists/parents?key=b468c1c7580c4f269ba2638debdf4c84";

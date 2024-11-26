@@ -1,5 +1,6 @@
 package utils.rawg;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Juego {
@@ -8,26 +9,28 @@ public class Juego {
     private String released;         
     private int idDesarrollador;     // Los id de dev, genero y plataforma debe  
     								// ser lo primero que se cargue de volcado
-    private int idGenero;            
-    private int idPlataforma;        
+    private Genero genero;            
+    private List<Plataforma> plataformas;        
     private boolean creadoPorUsuario; 
     private int idUsuario;           
     private int gameTime;
     
-    public Juego(String name, String descripcion, String released, int idDesarrollador, int idGenero, int idPlataforma, boolean creadoPorUsuario, int idUsuario, int gameTime) {
+    public Juego(String name, String descripcion, String released, int idDesarrollador, Genero genero, List<Plataforma> plataformas, boolean creadoPorUsuario, int idUsuario, int gameTime) {
         this.name = name;
         this.descripcion = descripcion;
         this.released = released;
         this.idDesarrollador = idDesarrollador;
-        this.idGenero = idGenero;
-        this.idPlataforma = idPlataforma;
+        this.genero = genero;
         this.creadoPorUsuario = creadoPorUsuario;
         this.idUsuario = idUsuario;
         this.gameTime = gameTime;
+        this.plataformas = plataformas;
     }
 
     
-    public String getName() {
+
+
+		public String getName() {
         return name;
     }
 
@@ -35,6 +38,7 @@ public class Juego {
         this.name = name;
     }
 
+    
     public String getDescripcion() {
         return descripcion;
     }
@@ -59,21 +63,14 @@ public class Juego {
         this.idDesarrollador = idDesarrollador;
     }
 
-    public int getIdGenero() {
-        return idGenero;
+    public Genero getGenero() {
+        return genero;
     }
 
-    public void setIdGenero(int idGenero) {
-        this.idGenero = idGenero;
+    public void setIdGenero(Genero genero) {
+        this.genero = genero;
     }
 
-    public int getIdPlataforma() {
-        return idPlataforma;
-    }
-
-    public void setIdPlataforma(int idPlataforma) {
-        this.idPlataforma = idPlataforma;
-    }
 
     public boolean isCreadoPorUsuario() {
         return creadoPorUsuario;
@@ -118,9 +115,23 @@ public class Juego {
 	@Override
 	public String toString() {
 	    return "Juego: [Nombre: " + name + ", Descripción: " + descripcion + ", Lanzamiento: " + released +
-	            ", Desarrollador ID: " + idDesarrollador + ", Género ID: " + idGenero + 
-	            ", Plataforma ID: " + idPlataforma + ", Creado por Usuario: " + creadoPorUsuario + 
+	            ", Desarrollador ID: " + idDesarrollador + ", Género ID: " + genero.getId_genero() + 
+	            ", Plataforma ID: " + plataformas.toString() + ", Creado por Usuario: " + creadoPorUsuario + 
 	            ", Usuario ID: " + idUsuario + ", Tiempo de Juego: " + gameTime + " minutos]";
+	}
+
+
+
+
+	public Plataforma[] getPlataformas() {
+		return plataformas;
+	}
+
+
+
+
+	public void setPlataformas(Plataforma[] plataformas) {
+		this.plataformas = plataformas;
 	}
 
 
