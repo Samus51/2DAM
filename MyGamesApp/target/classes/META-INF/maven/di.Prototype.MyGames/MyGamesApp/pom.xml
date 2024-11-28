@@ -1,66 +1,61 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>di.Prototype.MyGames</groupId>
-    <artifactId>MyGamesApp</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+	<groupId>di.Prototype.MyGames</groupId>
+	<artifactId>MyGamesApp</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 
-    <dependencies>
-        <!-- Dependencia de Hibernate -->
-        <dependency>
-            <groupId>Hibernate</groupId>
-            <artifactId>Pruebas</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+	<dependencies>
+		<!-- Dependencia de Hibernate -->
+		<dependency>
+			<groupId>Hibernate</groupId>
+			<artifactId>Pruebas</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
-        <!-- Dependencia para JavaFX -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>24-ea+15</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>24-ea+15</version>
-        </dependency>
-        <dependency>
-        	<groupId>uiux.javafx</groupId>
-        	<artifactId>ProyectMyGames</artifactId>
-        	<version>0.0.1-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
+		<!-- Dependencia para JavaFX -->
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>24-ea+15</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>24-ea+15</version>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <plugins>
-            <!-- Plugin para compilar con JDK 23 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
-                <configuration>
-                    <release>23</release>
-                </configuration>
-            </plugin>
+	<build>
+		<plugins>
+			<!-- Plugin para compilar con JDK 23 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<release>23</release>
+				</configuration>
+			</plugin>
 
-            <!-- Plugin de JavaFX para empaquetar la aplicación -->
-            <plugin>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version>
-                <configuration>
-                    <mainClass>aplication.Launcher</mainClass>
-                </configuration>
-            </plugin>
+			<!-- Plugin de JavaFX para empaquetar la aplicación -->
+			<plugin>
+				<groupId>org.openjfx</groupId>
+				<artifactId>javafx-maven-plugin</artifactId>
+				<version>0.0.8</version>
+				<configuration>
+					<mainClass>aplication.Launcher</mainClass>
+				</configuration>
+			</plugin>
 
-            <!-- Plugin para las pruebas unitarias -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-            </plugin>
-        </plugins>
-    </build>
+			<!-- Plugin para las pruebas unitarias -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version>
+			</plugin>
+		</plugins>
+	</build>
 </project>
