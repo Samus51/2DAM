@@ -9,15 +9,25 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import java.awt.GridBagLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
+
+import examen.mainApp.Launcher;
+import models.Usuario;
+
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Date;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Registro extends JDialog {
 
@@ -28,14 +38,21 @@ public class Registro extends JDialog {
 	private JTextField txtEmail;
 	private JPasswordField passwordField;
 	private JPasswordField passwordConfirm;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
-
+	private final ButtonGroup grupoPerfiles = new ButtonGroup();
+	private JDateChooser dateChooser;
+	private JRadioButton rdbJugador;
+	private JRadioButton rdbEntrenador;
 
 	/**
 	 * Create the dialog.
 	 */
 	public Registro() {
-		setBounds(100, 100, 324, 516);
+		inicializarComponentes();
+	}
+
+	private void inicializarComponentes() {
+		this.setModal(true);
+		setBounds(100, 100, 445, 682);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(30, 144, 255));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -44,10 +61,6 @@ public class Registro extends JDialog {
 		{
 			JPanel panel = new JPanel();
 			contentPanel.add(panel, BorderLayout.WEST);
-		}
-		{
-			JPanel panel = new JPanel();
-			contentPanel.add(panel, BorderLayout.SOUTH);
 		}
 		{
 			JPanel panel = new JPanel();
@@ -66,7 +79,7 @@ public class Registro extends JDialog {
 		{
 			JPanel panel = new JPanel();
 			contentPanel.add(panel, BorderLayout.CENTER);
-			panel.setLayout(new MigLayout("", "[][][][][][grow]", "[][][][][][grow][][][][][][][][][]"));
+			panel.setLayout(new MigLayout("", "[][][][][][grow]", "[][][][][][][][][][][][][][]"));
 			{
 				JLabel lblNewLabel_1 = new JLabel("Nombre");
 				panel.add(lblNewLabel_1, "cell 0 1");
@@ -87,11 +100,11 @@ public class Registro extends JDialog {
 			}
 			{
 				JLabel lblNewLabel_3 = new JLabel("Fecha de Nacimiento");
-				panel.add(lblNewLabel_3, "cell 0 5");
+				panel.add(lblNewLabel_3, "cell 0 5,alignx center,aligny center");
 			}
 			{
-				JDateChooser dateChooser = new JDateChooser();
-				panel.add(dateChooser, "cell 4 5 2 1,grow");
+				dateChooser = new JDateChooser();
+				panel.add(dateChooser, "cell 4 5 2 1,growx,aligny center");
 			}
 			{
 				JLabel lblNewLabel_4 = new JLabel("Email");
@@ -123,13 +136,13 @@ public class Registro extends JDialog {
 				panel.add(lblNewLabel_7, "cell 0 13");
 			}
 			{
-				JRadioButton rdbJugador = new JRadioButton("Jugador");
-				buttonGroup.add(rdbJugador);
+				rdbJugador = new JRadioButton("Jugador");
+				grupoPerfiles.add(rdbJugador);
 				panel.add(rdbJugador, "cell 4 13");
 			}
 			{
-				JRadioButton rdbEntrenador = new JRadioButton("Entrenador");
-				buttonGroup.add(rdbEntrenador);
+				rdbEntrenador = new JRadioButton("Entrenador");
+				grupoPerfiles.add(rdbEntrenador);
 				panel.add(rdbEntrenador, "cell 5 13");
 			}
 		}
@@ -140,16 +153,76 @@ public class Registro extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton btnRegistrar = new JButton("Registrar");
+				btnRegistrar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						crearUsuario();
+					}
+				});
 				btnRegistrar.setActionCommand("OK");
 				buttonPane.add(btnRegistrar);
 				getRootPane().setDefaultButton(btnRegistrar);
 			}
 			{
 				JButton btnCancelar = new JButton("Cancelar");
+				btnCancelar.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						cerrarVentana();
+					}
+				});
 				btnCancelar.setActionCommand("Cancel");
 				buttonPane.add(btnCancelar);
 			}
 		}
+	}
+
+	protected void crearUsuario() {
+		String nombre = txtNombre.getText();
+		String apellidos = txtApellidos.getText();
+		Date fechaNacimientoCruda = dateChooser.getDate();
+		String email = txtEmail.getText();
+		String password = new String(passwordField.getPassword());
+		String confirmPasswordCamp = new String(passwordConfirm.getPassword());
+		boolean encontrado = false;
+		boolean esEntrenador = false;
+		if (nombre.isBlank() || apellidos.isBlank() || email.isBlank() || password.isBlank()
+				|| confirmPasswordCamp.isBlank() || fechaNacimientoCruda == null) {
+			JOptionPane.showMessageDialog(null, "Debes completar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		if (rdbEntrenador.isSelected()) {
+			esEntrenador = true;
+		} else {
+			esEntrenador = false;
+		}
+
+		if (!rdbEntrenador.isSelected() && !rdbJugador.isSelected()) {
+			JOptionPane.showMessageDialog(null, "Debes elegir un perfil de usuario", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
+		if (password.equals(confirmPasswordCamp)) {
+			for (Usuario us : Launcher.lstUsuarios) {
+				if (us.getEmail().equals(email)) {
+					encontrado = true;
+					break;
+				}
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "La contraseña no coincide con la de confirmacion", "ERROR",
+					JOptionPane.ERROR_MESSAGE);
+
+		}
+		if (encontrado) {
+			JOptionPane.showMessageDialog(null, "El usuario a crear ya existe", "ERROR", JOptionPane.ERROR_MESSAGE);
+		} else {
+			Usuario newUser = new Usuario(nombre, apellidos, fechaNacimientoCruda, esEntrenador, email, confirmPasswordCamp);
+			Launcher.lstUsuarios.add(newUser);
+			JOptionPane.showMessageDialog(null, "El usuario "+nombre+" ha sido creado con éxito");
+		}
+	}
+
+	protected void cerrarVentana() {
+		this.dispose();
 	}
 
 }
