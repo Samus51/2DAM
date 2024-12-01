@@ -73,6 +73,8 @@ public class Usuario {
 		this.telefono = telefono;
 	}
 
+	
+	
 	/**
 	 * @return the email
 	 */

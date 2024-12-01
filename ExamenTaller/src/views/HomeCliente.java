@@ -169,12 +169,13 @@ public class HomeCliente extends JFrame {
 	}
 
 	protected void verReparaciones() {
-		// TODO Auto-generated method stub
+		PanelMisReparaciones panel = new PanelMisReparaciones(userLogado);
+		panel.setVisible(true);
 
 	}
 
 	protected void abrirCita() {
-		PanelCita cita = new PanelCita();
+		PanelCita cita = new PanelCita(userLogado);
 		cita.setVisible(true);
 
 	}

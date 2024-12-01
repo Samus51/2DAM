@@ -169,13 +169,13 @@ public class HomeEmpleado extends JFrame {
 	}
 
 	protected void verReparaciones() {
-		// TODO Auto-generated method stub
-
+		PanelMisReparaciones panel = new PanelMisReparaciones(userLogado);
+		panel.setVisible(true);
 	}
 
 	protected void abrirCita() {
-		// TODO Auto-generated method stub
-
+		PanelActualizarReparaciones panel = new PanelActualizarReparaciones();
+		panel.setVisible(true);
 	}
 
 	private void cerrarSesion() {

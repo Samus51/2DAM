@@ -20,11 +20,14 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import main.Launcher;
+import models.Cita;
+import models.Reparacion;
 import models.Usuario;
 import models.Vehiculo;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PanelCita extends JDialog {
@@ -36,13 +39,16 @@ public class PanelCita extends JDialog {
 	private JTextField txtMatricula;
 	private JTextField txtMarca;
 	private JTextField txtModelo;
-
-	
-
+	private Usuario cliente;
 	/**
 	 * Create the dialog.
 	 */
-	public PanelCita() {
+	public PanelCita(Usuario user) {
+		inicializarComponentes();
+		this.cliente = user;
+	}
+
+	private void inicializarComponentes() {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		{
@@ -66,14 +72,16 @@ public class PanelCita extends JDialog {
 							btnAceptar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 						}
+
 						@Override
 						public void mouseExited(MouseEvent e) {
 							btnAceptar.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 						}
+
 						@Override
 						public void mouseClicked(MouseEvent e) {
-						pedirCita();
+							pedirCita();
 						}
 					});
 					panel.add(btnAceptar);
@@ -86,14 +94,16 @@ public class PanelCita extends JDialog {
 							btnCancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 						}
+
 						@Override
 						public void mouseExited(MouseEvent e) {
 							btnCancelar.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 						}
+
 						@Override
 						public void mouseClicked(MouseEvent e) {
-						dispose();
+							dispose();
 						}
 					});
 					panel.add(btnCancelar);
@@ -178,34 +188,64 @@ public class PanelCita extends JDialog {
 		}
 	}
 
-
-
 	protected void pedirCita() {
-
+		int contadorCitas = 0;
 		String matricula = txtMatricula.getText();
 		String marca = txtMarca.getText();
 		String modelo = txtModelo.getText();
 		Date fechaCita = txtFecha.getDate();
-		
-		Vehiculo veh1 = new Vehiculo(matricula,marca,modelo);
-		boolean encontrado = false;
-		for (Vehiculo v2 : Launcher.lstVehiculos) {
-			if (v2.getMatricula().equalsIgnoreCase(matricula)) {
-				encontrado = true;
+
+		// Buscar el vehículo
+		Vehiculo vehiculo = null;
+		for (Vehiculo v : Launcher.lstVehiculos) {
+			if (v.getMatricula().equalsIgnoreCase(matricula) && v.getPropietario().equals(cliente)) {
+				vehiculo = v;
 				break;
 			}
 		}
-		if (encontrado) {
-			JOptionPane.showMessageDialog(null, "El cliente con vehiculo ya tiene citas.", "Error",
-					JOptionPane.ERROR_MESSAGE);
+
+		if (vehiculo == null) {
+			vehiculo = new Vehiculo(matricula, marca, modelo, cliente);
+			Launcher.lstVehiculos.add(vehiculo);
+		}
+
+		for (Cita v2 : Launcher.lstCitas) {
+			if (esMismaFecha(v2.getFechaCita(), fechaCita)) {
+				contadorCitas++;
+
+			}
+		}
+
+		if (contadorCitas >= 2) {
+			JOptionPane.showMessageDialog(null, "Este dia no esta disponible para su cita, elija otra fecha", "Warning",
+					JOptionPane.WARNING_MESSAGE);
+			return;
 
 		} else {
-			Vehiculo v2 = new Vehiculo(modelo, modelo, modelo);
-			Launcher.lstVehiculos.add(v2);
-			
-			JOptionPane.showMessageDialog(null, "La cita para el vehiculo de matricula " +matricula+ " ha sido creado con éxito");
+
+			for (Cita citaExistente : Launcher.lstCitas) {
+				if (citaExistente.getFechaCita().equals(fechaCita)) {
+					JOptionPane.showMessageDialog(null, "Ya tiene usted una cita para su vehiculo el dia seleccionado",
+							"Warning", JOptionPane.WARNING_MESSAGE);
+					return;
+
+				}
+			}
+
+			Cita nuevaCita = new Cita(vehiculo, fechaCita);
+			Launcher.lstCitas.add(nuevaCita);
+			Reparacion r1 = new Reparacion(nuevaCita,"Pendiente","",0.0,null);
+			Launcher.lstReparaciones.add(r1);
+			JOptionPane.showMessageDialog(null,
+					"La cita para el vehiculo de matricula " + matricula + " ha sido creado con éxito");
 
 		}
+
+	}
+
+	private boolean esMismaFecha(Date fecha1, Date fecha2) {
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyyMMdd");
+		return formatoFecha.format(fecha1).equals(formatoFecha.format(fecha2));
 	}
 
 }

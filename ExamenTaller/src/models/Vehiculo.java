@@ -5,7 +5,7 @@ public class Vehiculo {
 	private String matricula;
 	private String marca;
 	private String modelo;
-
+	private Usuario propietario;
 	/**
 	 * @return the matricula
 	 */
@@ -47,16 +47,26 @@ public class Vehiculo {
 	public void setModelo(String modelo) {
 		this.modelo = modelo;
 	}
+	public Usuario getPropietario() {
+	    return propietario;
+	}
+
+	public void setPropietario(Usuario propietario) {
+	    this.propietario = propietario;
+	}
 
 	/**
 	 * @param matricula
 	 * @param marca
 	 * @param modelo
 	 */
-	public Vehiculo(String matricula, String marca, String modelo) {
+	public Vehiculo(String matricula, String marca, String modelo, Usuario Propietario) {
 		this.matricula = matricula;
 		this.marca = marca;
 		this.modelo = modelo;
+		this.propietario = Propietario;
 	}
 
+	
+	
 }

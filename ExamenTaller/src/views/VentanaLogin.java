@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import main.Launcher;
+import models.Empleado;
 import models.Usuario;
 
 import java.awt.BorderLayout;
@@ -42,8 +43,9 @@ public class VentanaLogin extends JFrame {
 
 	private void inicializarComponentes() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 411);
+		setBounds(100, 100, 450, 428);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(135, 206, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -127,21 +129,34 @@ public class VentanaLogin extends JFrame {
 	}
 
 	protected void iniciarSesion() {
-		String email = txtUsuario.getText();
-		String Contraseña = new String(passwordField.getPassword());
+	    String email = txtUsuario.getText();
+	    String contraseña = new String(passwordField.getPassword());
+	    boolean usuarioEncontrado = false;
 
-		for (Usuario clienteLogueado : Launcher.lstClientes) {
-			if (clienteLogueado.getEmail().equals(email) && clienteLogueado.getContraseña().equals(Contraseña)) {
-				dispose();
-				HomeCliente home = new HomeCliente(clienteLogueado);
-				home.setVisible(true);
-			} else {
-				JOptionPane.showMessageDialog(null, "El usuario es incorrecto o no existe", "Error",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-		}
+	    for (Usuario clienteLogueado : Launcher.lstClientes) {
+	        if (clienteLogueado.getEmail().equals(email) && clienteLogueado.getContraseña().equals(contraseña)) {
+	            usuarioEncontrado = true;
+	            dispose();
+	            HomeCliente home = new HomeCliente(clienteLogueado);
+	            home.setVisible(true);
+	            break;
+	        }
+	    }
+	    
+	    for (Empleado empleadoLogueado : Launcher.lstEmpleados) {
+	        if (empleadoLogueado.getEmail().equals(email) && empleadoLogueado.getContraseña().equals(contraseña)) {
+	            usuarioEncontrado = true;
+	            dispose();
+	            HomeEmpleado home = new HomeEmpleado(empleadoLogueado);
+	            home.setVisible(true);
+	            break;
+	        }
+	    }
 
+	    if (!usuarioEncontrado) {
+	        JOptionPane.showMessageDialog(null, "El usuario es incorrecto o no existe", "Error",
+	                                      JOptionPane.ERROR_MESSAGE);
+	    }
 	}
 
 	protected void abrirRegistro() {
