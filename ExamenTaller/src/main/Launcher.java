@@ -32,15 +32,19 @@ public class Launcher {
 		Vehiculo vSpeeder = new Vehiculo("456ABC", "Tesla", "Roadster",c1);
 
 		Cita citaNacho  = new Cita(vMaster, new SimpleDateFormat("dd-MM-yyyy").parse("01-12-2024"));
-		Cita citaNacho2 = new Cita(vMaster, new SimpleDateFormat("dd-MM-yyyy").parse("01-12-2024"));
-		Reparacion rep1 = new Reparacion(citaNacho, "Finalizado", "Bateria muerta", 250.34,e1);
+		Cita citaNacho2 = new Cita(vSpeeder, new SimpleDateFormat("dd-MM-yyyy").parse("02-12-2024"));
+		Reparacion rep1 = new Reparacion(citaNacho, "Pendiente", "", 0.0,null);
 		Reparacion repAnon = new Reparacion(citaNacho2, "Pendiente", "", 0, null);
 		lstReparaciones.add(rep1);
 		lstReparaciones.add(repAnon);
 		lstVehiculos.add(vMaster);
+		lstVehiculos.add(vSpeeder);
+
 		lstClientes.add(c1);
 		lstEmpleados.add(e1);
 		lstCitas.add(citaNacho);
+		lstCitas.add(citaNacho2);
+
 		VentanaLogin ventana = new VentanaLogin();
 		ventana.setVisible(true);
 		System.out.println(lstCitas.size());

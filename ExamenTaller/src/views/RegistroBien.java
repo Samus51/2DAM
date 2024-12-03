@@ -17,23 +17,16 @@ public class RegistroBien extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			RegistroBien dialog = new RegistroBien();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	/**
 	 * Create the dialog.
 	 */
 	public RegistroBien() {
+		
+		inicializarComponentes();
+	}
+
+	private void inicializarComponentes() {
 		setBounds(100, 100, 450, 527);
 		getContentPane().setLayout(new BorderLayout());
 		{

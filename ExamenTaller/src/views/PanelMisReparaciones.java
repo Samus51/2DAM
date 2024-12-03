@@ -32,6 +32,7 @@ public class PanelMisReparaciones extends JDialog {
 	 */
 	public PanelMisReparaciones(Usuario clienteLogueado) {
 		inicializarComponentes();
+		this.setModal(true);
 		this.userLogado = clienteLogueado;
 		cargarReparaciones();
 	}
@@ -89,27 +90,27 @@ public class PanelMisReparaciones extends JDialog {
 	}
 
 	private void cargarReparaciones() {
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		model.setRowCount(0); // Limpiar la tabla antes de cargar nuevas filas
+	    DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    model.setRowCount(0); // Limpiar la tabla antes de cargar nuevas filas
 
-		for (Reparacion rep : Launcher.lstReparaciones) {
-			// Verificar si la reparación está asociada a un vehículo del cliente logueado
-			if (rep.getEncargado() != null && rep.getEncargado().equals(userLogado)) {
-				if (rep.getEstado().equals("Finalizado") || rep.getEstado().equals("Finalizado")) {
+	    for (Reparacion rep : Launcher.lstReparaciones) {
+	        // Verificar si la reparación está asociada a un vehículo del cliente logueado
+	        if (rep.getCita().getVehiculo().getPropietario().equals(userLogado)) {
 
-					try {
-						// Añadir la reparación correspondiente en la tabla
-						model.addRow(new Object[] { rep.getCita().getVehiculo().getMatricula(),
-								new SimpleDateFormat("dd-MM-yyyy").format(rep.getCita().getFechaCita()), // Formato de
-																											// fecha
-								rep.getEstado(), rep.getImporte(), // Suponiendo que `getImporte()` existe en Reparacion
-								rep.getObservaciones() // Suponiendo que `getObservaciones()` existe en Reparacion
-						});
-					} catch (Exception e) {
-						e.printStackTrace(); // Gestionar la excepción si algo falla al agregar la fila
-					}
-				}
-			}
-		}
+	            try {
+	                // Añadir la reparación correspondiente en la tabla
+	                model.addRow(new Object[] { 
+	                    rep.getCita().getVehiculo().getMatricula(),
+	                    new SimpleDateFormat("dd-MM-yyyy").format(rep.getCita().getFechaCita()), 
+	                    rep.getEstado(), 
+	                    rep.getImporte(),
+	                    rep.getObservaciones()
+	                });
+	            } catch (Exception e) {
+	                e.printStackTrace(); // Gestionar la excepción si algo falla al agregar la fila
+	            }
+	        }
+	    }
 	}
+	
 }

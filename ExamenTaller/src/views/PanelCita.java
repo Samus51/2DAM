@@ -45,6 +45,7 @@ public class PanelCita extends JDialog {
 	 */
 	public PanelCita(Usuario user) {
 		inicializarComponentes();
+		this.setModal(true);
 		this.cliente = user;
 	}
 
@@ -189,58 +190,41 @@ public class PanelCita extends JDialog {
 	}
 
 	protected void pedirCita() {
-		int contadorCitas = 0;
-		String matricula = txtMatricula.getText();
-		String marca = txtMarca.getText();
-		String modelo = txtModelo.getText();
-		Date fechaCita = txtFecha.getDate();
+	    String matricula = txtMatricula.getText();
+	    Date fechaCita = txtFecha.getDate();
 
-		// Buscar el vehículo
-		Vehiculo vehiculo = null;
-		for (Vehiculo v : Launcher.lstVehiculos) {
-			if (v.getMatricula().equalsIgnoreCase(matricula) && v.getPropietario().equals(cliente)) {
-				vehiculo = v;
-				break;
-			}
-		}
+	    // Buscar el vehículo
+	    Vehiculo vehiculo = null;
+	    for (Vehiculo v : Launcher.lstVehiculos) {
+	        if (v.getMatricula().equalsIgnoreCase(matricula) && v.getPropietario().equals(cliente)) {
+	            vehiculo = v;
+	            break;
+	        }
+	    }
 
-		if (vehiculo == null) {
-			vehiculo = new Vehiculo(matricula, marca, modelo, cliente);
-			Launcher.lstVehiculos.add(vehiculo);
-		}
+	    if (vehiculo == null) {
+	        vehiculo = new Vehiculo(matricula, txtMarca.getText(), txtModelo.getText(), cliente);
+	        Launcher.lstVehiculos.add(vehiculo);
+	    }
 
-		for (Cita v2 : Launcher.lstCitas) {
-			if (esMismaFecha(v2.getFechaCita(), fechaCita)) {
-				contadorCitas++;
+	    // Validación de si el vehículo ya tiene una cita en la misma fecha
+	    for (Cita citaExistente : Launcher.lstCitas) {
+	        if (citaExistente.getVehiculo().equals(vehiculo) && esMismaFecha(citaExistente.getFechaCita(), fechaCita)) {
+	            JOptionPane.showMessageDialog(null, "Este vehículo ya tiene una cita en la fecha seleccionada.",
+	                    "Warning", JOptionPane.WARNING_MESSAGE);
+	            return;
+	        }
+	    }
 
-			}
-		}
-
-		if (contadorCitas >= 2) {
-			JOptionPane.showMessageDialog(null, "Este dia no esta disponible para su cita, elija otra fecha", "Warning",
-					JOptionPane.WARNING_MESSAGE);
-			return;
-
-		} else {
-
-			for (Cita citaExistente : Launcher.lstCitas) {
-				if (citaExistente.getFechaCita().equals(fechaCita)) {
-					JOptionPane.showMessageDialog(null, "Ya tiene usted una cita para su vehiculo el dia seleccionado",
-							"Warning", JOptionPane.WARNING_MESSAGE);
-					return;
-
-				}
-			}
-
-			Cita nuevaCita = new Cita(vehiculo, fechaCita);
-			Launcher.lstCitas.add(nuevaCita);
-			Reparacion r1 = new Reparacion(nuevaCita,"Pendiente","",0.0,null);
-			Launcher.lstReparaciones.add(r1);
-			JOptionPane.showMessageDialog(null,
-					"La cita para el vehiculo de matricula " + matricula + " ha sido creado con éxito");
-
-		}
-
+	    // Crear nueva cita
+	    Cita nuevaCita = new Cita(vehiculo, fechaCita);
+	    Launcher.lstCitas.add(nuevaCita);
+	    
+	    // Crear una nueva reparación asociada a la cita
+	    Reparacion nuevaReparacion = new Reparacion(nuevaCita, "Pendiente", "", 0.0, null);
+	    Launcher.lstReparaciones.add(nuevaReparacion);
+	    
+	    JOptionPane.showMessageDialog(null, "La cita para el vehículo de matrícula " + matricula + " ha sido creada con éxito.");
 	}
 
 	private boolean esMismaFecha(Date fecha1, Date fecha2) {

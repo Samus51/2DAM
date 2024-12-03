@@ -1,239 +1,194 @@
 package views;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import main.Launcher;
+import models.Empleado;
 import models.Reparacion;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JLabel;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.GridLayout;
-import javax.swing.JComboBox;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class PanelActualizarReparaciones extends JDialog {
 
-	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
-	private JComboBox cbMatricula;
-	private JLabel lblMarca;
-	private JLabel lblModelo;
-	private JLabel lblEstadoActual;
-	private JComboBox cbNuevoEstado;
-	private JTextArea txtObservaciones;
+    private static final long serialVersionUID = 1L;
+    private final JPanel contentPanel = new JPanel();
+    private JComboBox<String> cbMatricula;
+    private JLabel lblMarca;
+    private JLabel lblModelo;
+    private JLabel lblEstadoActual;
+    private JComboBox<String> cbNuevoEstado;
+    private JTextArea txtObservaciones;
+    private JPanel panelOculto;
+    private JTextField txtImporte;
+    private Reparacion reparacionSeleccionada;
+    private Empleado mecanicoLogado;
+    public PanelActualizarReparaciones(Empleado user) {
+        inicializarComponentes();
+		this.setModal(true);
+        cargaReparaciones();
+    }
 
-	/**
-	 * Create the dialog.
-	 */
-	public PanelActualizarReparaciones() {
-		inicializarComponentes();
-		cargaReparaciones();
-	}
+    private void inicializarComponentes() {
+        setBounds(100, 100, 450, 300);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new BorderLayout());
+        contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        getContentPane().add(contentPanel, BorderLayout.CENTER);
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
-	private void inicializarComponentes() {
-		setBounds(100, 100, 450, 300);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-		{
-			JPanel panel = new JPanel();
-			contentPanel.add(panel);
-			panel.setLayout(new GridLayout(5, 2, 0, 0));
-			{
-				JLabel lblNewLabel_2 = new JLabel("Matrícula");
-				lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-				panel.add(lblNewLabel_2);
-			}
-			{
-				cbMatricula = new JComboBox();
-				panel.add(cbMatricula);
-			}
-			{
-				JLabel lblNewLabel_3 = new JLabel("Marca");
-				lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-				panel.add(lblNewLabel_3);
-			}
-			{
-				lblMarca = new JLabel("");
-				lblMarca.setHorizontalAlignment(SwingConstants.CENTER);
-				panel.add(lblMarca);
-			}
-			{
-				JLabel lblNewLabel_6 = new JLabel("Modelo");
-				lblNewLabel_6.setHorizontalAlignment(SwingConstants.CENTER);
-				panel.add(lblNewLabel_6);
-			}
-			{
-				lblModelo = new JLabel("");
-				lblModelo.setHorizontalAlignment(SwingConstants.CENTER);
-				panel.add(lblModelo);
-			}
-			{
-				JLabel lblNewLabel_8 = new JLabel("Estado Actual");
-				lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
-				panel.add(lblNewLabel_8);
-			}
-			{
-				lblEstadoActual = new JLabel("");
-				lblEstadoActual.setHorizontalAlignment(SwingConstants.CENTER);
-				panel.add(lblEstadoActual);
-			}
-			{
-				JLabel lblNewLabel_1 = new JLabel("Nuevo Estado");
-				lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-				panel.add(lblNewLabel_1);
-			}
-			{
-				cbNuevoEstado = new JComboBox();
-				panel.add(cbNuevoEstado);
-			}
-		}
-		{
-			JPanel panel = new JPanel();
-			contentPanel.add(panel);
-			panel.setLayout(new GridLayout(2, 2, 0, 0));
-			{
-				JLabel lblNewLabel_5 = new JLabel("Importe");
-				lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
-				panel.add(lblNewLabel_5);
-			}
-			{
-				JTextField txtImporte = new JTextField();
-				panel.add(txtImporte);
-				txtImporte.setColumns(10);
-			}
-			{
-				JLabel lblNewLabel_4 = new JLabel("Observaciones");
-				lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
-				panel.add(lblNewLabel_4);
-			}
-			{
-				txtObservaciones = new JTextArea();
-				panel.add(txtObservaciones);
-			}
-		}
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton btnAceptar = new JButton("Aceptar");
-				btnAceptar.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-					actualizarReparacion();
-					}
+        JPanel panel = new JPanel();
+        contentPanel.add(panel);
+        panel.setLayout(new GridLayout(5, 2, 0, 0));
 
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						btnAceptar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        panel.add(new JLabel("Matrícula", SwingConstants.CENTER));
+        cbMatricula = new JComboBox<>();
+        cbMatricula.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarDatos(); 
+            }
+        });
+        panel.add(cbMatricula);
 
-					}
+        panel.add(new JLabel("Marca", SwingConstants.CENTER));
+        lblMarca = new JLabel("", SwingConstants.CENTER);
+        panel.add(lblMarca);
 
-					@Override
-					public void mouseExited(MouseEvent e) {
-						btnAceptar.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        panel.add(new JLabel("Modelo", SwingConstants.CENTER));
+        lblModelo = new JLabel("", SwingConstants.CENTER);
+        panel.add(lblModelo);
 
-					}
-				});
-				btnAceptar.setActionCommand("OK");
-				buttonPane.add(btnAceptar);
-				getRootPane().setDefaultButton(btnAceptar);
-			}
-			{
-				JButton cancelButton = new JButton("Cancelar");
-				cancelButton.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-					dispose();
-					}
+        panel.add(new JLabel("Estado Actual", SwingConstants.CENTER));
+        lblEstadoActual = new JLabel("", SwingConstants.CENTER);
+        panel.add(lblEstadoActual);
 
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        panel.add(new JLabel("Nuevo Estado", SwingConstants.CENTER));
+        cbNuevoEstado = new JComboBox<>();
+        cbNuevoEstado.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                verificarPanelOculto(); 
+            }
+        });
+        panel.add(cbNuevoEstado);
 
-					}
+        panelOculto = new JPanel();
+        panelOculto.setLayout(new GridLayout(2, 2, 0, 0));
+        panelOculto.setVisible(false);
+        contentPanel.add(panelOculto);
 
-					@Override
-					public void mouseExited(MouseEvent e) {
-						cancelButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        panelOculto.add(new JLabel("Importe", SwingConstants.CENTER));
+        txtImporte = new JTextField();
+        panelOculto.add(txtImporte);
 
-					}
-				});
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
-		{
-			JPanel panel = new JPanel();
-			panel.setBackground(new Color(0, 0, 139));
-			getContentPane().add(panel, BorderLayout.NORTH);
-			{
-				JLabel lblNewLabel = new JLabel("Actualizar Reparacion");
-				lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
-				lblNewLabel.setForeground(new Color(255, 255, 255));
-				panel.add(lblNewLabel);
-			}
-		}
-	}
+        panelOculto.add(new JLabel("Observaciones", SwingConstants.CENTER));
+        txtObservaciones = new JTextArea();
+        panelOculto.add(txtObservaciones);
 
-	protected void actualizarReparacion() {
-		// TODO Auto-generated method stub
-		
-	}
+        JPanel buttonPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-	private void cargaReparaciones() {
-	    DefaultComboBoxModel model = (DefaultComboBoxModel) cbMatricula.getModel();
-	    for (Reparacion eq : main.Launcher.lstReparaciones) {
-	        if (!eq.getEstado().equals("Finalizado") && model.getIndexOf(eq) == -1) { // Evita duplicados
-	            model.addElement(eq.getCita().getVehiculo().getMatricula());
-	        }
-	    }
-	}
+        JButton btnAceptar = new JButton("Aceptar");
+        btnAceptar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnAceptar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                guardarCambios(); 
+            }
+        });
+        buttonPane.add(btnAceptar);
 
-	
-	
-	
-	
-	/*
-	 * protected void cargarCombos(ActionEvent e) { String matricula =
-	 * cbMatricula.getSelectedItem();
-	 * 
-	 * 
-	 * String modelo = cbMatricula.getSelectedItem().toString(); String
-	 * marcaVehiculo = cbMatricula.getSelectedItem().toString(); Equipo
-	 * eqSeleccionado = null; for (Equipo eq : Launcher.lstEquipos) { if
-	 * (eq.getNombre().equals(nombreEquipo)) { eqSeleccionado = eq; break; }
-	 * 
-	 * } if (eqSeleccionado != null) {
-	 * lblAño.setText(Integer.toString(eqSeleccionado.getAnyoCreacion()));
-	 * lblEntrenador.setText( eqSeleccionado.getEntrenador().getNombre() + " " +
-	 * eqSeleccionado.getEntrenador().getApellidos());
-	 * lblGenero.setText(eqSeleccionado.getGenero());
-	 * lblHorario.setText(eqSeleccionado.getHorario());
-	 * lblNºJugadores.setText(Integer.toString(eqSeleccionado.getLstJugadores().size
-	 * ())); } List<Equipo> lstEquiposUsuario = ObtieneEquipoJugador(us);
-	 * 
-	 * if (lstEquiposUsuario.contains(eqSeleccionado)) {
-	 * btnInscribir.setEnabled(false); } else { btnInscribir.setEnabled(true);
-	 * 
-	 * }
-	 * 
-	 * }
-	 */	
-	
+        JButton cancelButton = new JButton("Cancelar");
+        cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cancelButton.addActionListener(e -> dispose());
+        buttonPane.add(cancelButton);
+
+        JPanel headerPanel = new JPanel();
+        headerPanel.setBackground(new Color(0, 0, 139));
+        getContentPane().add(headerPanel, BorderLayout.NORTH);
+        JLabel lblTitle = new JLabel("Actualizar Reparación");
+        lblTitle.setFont(new Font("Tahoma", Font.BOLD, 11));
+        lblTitle.setForeground(Color.WHITE);
+        headerPanel.add(lblTitle);
+    }
+    private void cargaReparaciones() {
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cbMatricula.getModel();
+        model.removeAllElements(); // Limpiar el modelo antes de agregar nuevas matrículas
+        for (Reparacion rep : main.Launcher.lstReparaciones) {
+            String matricula = rep.getCita().getVehiculo().getMatricula();
+            // Solo añadir reparaciones que NO están finalizadas
+            if (!"Finalizado".equals(rep.getEstado())) {
+                model.addElement(matricula);
+            }
+        }
+    }
+    
+
+    private void actualizarDatos() {
+        String matriculaSeleccionada = (String) cbMatricula.getSelectedItem();
+        if (matriculaSeleccionada == null) return;
+
+        for (Reparacion rep : main.Launcher.lstReparaciones) {
+            if (rep.getCita().getVehiculo().getMatricula().equals(matriculaSeleccionada)) {
+                reparacionSeleccionada = rep;
+                break;
+            }
+        }
+
+        if (reparacionSeleccionada != null) {
+            lblMarca.setText(reparacionSeleccionada.getCita().getVehiculo().getMarca());
+            lblModelo.setText(reparacionSeleccionada.getCita().getVehiculo().getModelo());
+            lblEstadoActual.setText(reparacionSeleccionada.getEstado());
+
+            // Primero, eliminar los elementos existentes en el combo
+            cbNuevoEstado.removeAllItems();
+
+            // Ahora, añadir los nuevos elementos según el estado
+            if ("Pendiente".equals(reparacionSeleccionada.getEstado())) {
+                cbNuevoEstado.addItem("En curso");
+            } else if ("En curso".equals(reparacionSeleccionada.getEstado())) {
+                cbNuevoEstado.addItem("Finalizado");
+            }
+
+            // Esto es para mantener la selección de la matrícula
+            cbMatricula.setSelectedItem(matriculaSeleccionada);
+
+            // Verifica si el panel oculto debe ser visible
+            verificarPanelOculto();
+        }
+    }
+
+    private void verificarPanelOculto() {
+        String nuevoEstado = (String) cbNuevoEstado.getSelectedItem();
+        panelOculto.setVisible("Finalizado".equals(nuevoEstado));
+    }
+
+    private void guardarCambios() {
+        if (reparacionSeleccionada != null) {
+            String nuevoEstado = (String) cbNuevoEstado.getSelectedItem();
+            reparacionSeleccionada.setEstado(nuevoEstado);
+
+            if ("En curso".equals(nuevoEstado) && "Pendiente".equals(reparacionSeleccionada.getEstado())) {
+            	reparacionSeleccionada.setEncargado(mecanicoLogado);
+            }
+
+            
+            if ("Finalizado".equals(nuevoEstado)) {
+                reparacionSeleccionada.setObservaciones(txtObservaciones.getText());
+                try {
+                    reparacionSeleccionada.setImporte(Double.parseDouble(txtImporte.getText()));
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "El importe debe ser numérico.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Cambios guardados con éxito.", "Confirmación",
+                    JOptionPane.INFORMATION_MESSAGE);
+            cargaReparaciones();  // Refrescar combo con nuevas matrículas
+            dispose();
+        }
+    }
 }

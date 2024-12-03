@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import models.Empleado;
 import models.Usuario;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
@@ -23,7 +24,7 @@ public class HomeEmpleado extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblUsuario;
-	private Usuario userLogado;
+	private Empleado userLogado;
 	private JLabel lblCita;
 	private JLabel lblReparaciones;
 	private JLabel lblLogOut;
@@ -31,7 +32,7 @@ public class HomeEmpleado extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public HomeEmpleado(Usuario clienteLogueado) {
+	public HomeEmpleado(Empleado clienteLogueado) {
 		inicializarComponentes();
 		this.userLogado = clienteLogueado;
 		lblUsuario.setText("Bienvenido " + userLogado.getNombre() + " " + userLogado.getApellidos());
@@ -169,12 +170,12 @@ public class HomeEmpleado extends JFrame {
 	}
 
 	protected void verReparaciones() {
-		PanelMisReparaciones panel = new PanelMisReparaciones(userLogado);
+		PanelMisTrabajos panel = new PanelMisTrabajos(userLogado);
 		panel.setVisible(true);
 	}
 
 	protected void abrirCita() {
-		PanelActualizarReparaciones panel = new PanelActualizarReparaciones();
+		PanelActualizarReparaciones panel = new PanelActualizarReparaciones(userLogado);
 		panel.setVisible(true);
 	}
 
