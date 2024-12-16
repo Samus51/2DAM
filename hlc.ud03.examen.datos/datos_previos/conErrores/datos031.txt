@@ -1,0 +1,11 @@
+referencia=3567578964321
+nombre=Joystick Kingston ZZ21
+precio=100.25
+marca=Kingston
+puntuacion=3.5
+fecha_inicio_venta=10/10/2022
+dominio=www.chupiguay.com
+url=http://www.chupiguay.com/
+correo_pedidos=pedidos@chupiguay.com
+puntos_fuertes=Precio,Tecnologia,Durabilidad,Disponibilidad,Marca,Sostenible
+puntos_debiles=Sostenible,Calidad,Tamaño,Precio,Tecnologia
